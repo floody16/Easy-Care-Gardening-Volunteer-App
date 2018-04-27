@@ -1,17 +1,80 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>About you:</h2>
-<ul>
-    <li><b>Email:</b> {{ current_user.email }}</li>
-    <li><b>Full name:</b> {{ current_user.full_name }}</li>
-    <li><b>Join date (ECG):</b> {{ current_user.join_date }}</li>
-    <li><b>Join date (app):</b> {{ current_user.created_at }}</li>
-    <li><b>User type:</b> {{ current_user.user_type }}</li>
-</ul>
-<h2>Options:</h2>
-<ul>
-    <li><a href="{{ url_for('news') }}">News</a></li>
-    <li><a href="{{ url_for('logout') }}">Log out</a></li>
-</ul>
+<div class="row mb-4">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="float-left">About you</h3>
+                <a href="#" class="btn btn-primary float-right">Edit</a>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong class="text-dark">Full name:</strong> {{ current_user.full_name }}</li>
+                <li class="list-group-item"><strong class="text-dark">Email:</strong> {{ current_user.email }}</li>
+                <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ current_user.join_date }}</li>
+                <li class="list-group-item"><strong class="text-dark">Created at:</strong> {{ current_user.created_at }}</li>
+                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ current_user.user_type }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Weather</h3>
+            </div>
+            <div class="card-body">
+                <p>Placeholder...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-sm-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h3 class="card-title">Roster</h3>
+                <p class="card-text">View and opt-into gardening jobs available to you.</p>
+                <a href="{{ url_for('roster') }}" class="btn btn-primary">View my Roster</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h3 class="card-title">Feedback</h3>
+                <p class="card-text">View and manage feedback regarding past jobs.</p>
+                <a href="{{ url_for('news') }}" class="btn btn-primary">View my Feedback</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h3 class="card-title">News</h3>
+                <p class="card-text">View and manage updates by Easy Care Gardening coordinators.</p>
+                <a href="{{ url_for('news') }}" class="btn btn-primary">View News</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h3 class="card-title">Manage Jobs</h3>
+                <p class="card-text">View and manage the jobs a volunteer may opt-in to.</p>
+                <a href="{{ url_for('jobs') }}" class="btn btn-primary">Manage Jobs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h3 class="card-title">Log out</h3>
+                <p class="card-text">Keep your account safe by logging out when finished.</p>
+                <a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

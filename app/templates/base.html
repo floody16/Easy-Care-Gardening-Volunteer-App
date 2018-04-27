@@ -10,26 +10,32 @@
 </head>
 <body>
 <div class="container mt-5 mb-5">
-    <ul class="nav nav-pills nav-fill mb-5">
+    <ul class="nav nav-pills nav-fill mb-5 bg-light">
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('roster') }}">Roster</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('dashboard') }}">Feedback</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ url_for('news') }}">News</a>
         </li>
-         <li class="nav-item">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('jobs') }}">Manage Jobs</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
         </li>
     </ul>
-    <h1 class="mb-3">{{ title if title or 'ECGV' }}</h1>
-    <hr>
-    {% with messages = get_flashed_messages() %}
+    <h1 class="mb-5 text-center">{{ title if title or 'ECGV' }}</h1>
+    {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+    {% endfor %}
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}

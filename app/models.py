@@ -14,11 +14,11 @@ class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+    email = db.Column(db.String(120), unique=True)
     password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.Integer, index=True)
-    full_name = db.Column(db.String(64), index=True)
-    join_date = db.Column(db.DateTime, index=True)
+    user_type = db.Column(db.Integer)
+    full_name = db.Column(db.String(64))
+    join_date = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     def set_password(self, password):
@@ -33,8 +33,8 @@ class NewsItem(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    title = db.Column(db.String(64), index=True)
-    body = db.Column(db.String(2048), index=True)
+    title = db.Column(db.String(64))
+    body = db.Column(db.String(2048))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     acknowledgements = db.relationship('NewsItemAck', backref='acknowledger', lazy='dynamic')
@@ -53,3 +53,13 @@ class NewsItemAck(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     newsitem_id = db.Column(db.Integer, db.ForeignKey('newsitem.id'))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
+
+class Job(db.Model):
+    __tablename__ = 'job'
+
+    id = db.Column(db.Integer, primary_key=True)
+    address = db.Column(db.String(64))
+    date = db.Column(db.DateTime)
+    time = db.Column(db.String(2))
+    notes = db.Column(db.String(1024))

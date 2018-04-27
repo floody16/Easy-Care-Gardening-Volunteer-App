@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-3">New Job</h2>
+<div class="card mb-5 bg-light">
+    <div class="card-body">
+        <form action="{{ url_for('jobs') }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group row">
+                {{ form.address.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.address(class_='form-control') }}
+                    {% for error in form.address.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.date.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.date(class_='form-control') }}
+                    {% for error in form.date.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.time.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.time(class_='form-control') }}
+                    {% for error in form.time.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.notes.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.notes(class_='form-control') }}
+                    {% for error in form.notes.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.submit(class_='btn btn-primary float-right') }}
+        </form>
+    </div>
+</div>
+<h2 class="mb-3">All Jobs ({{ jobs|length }})</h2>
+{% for job in jobs %}
+<div class="card mb-3">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
+        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ job.date }}</li>
+        <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
+        <li class="list-group-item"><strong class="text-dark">Notes:</strong>
+            {% if job.notes %}
+            {{ job.notes }}
+            {% else %}
+            <i>None</i>
+            {% endif %}
+        </li>
+        <li class="list-group-item">
+            <a href="#" class="btn btn-warning">Change Details</a>
+            <a href="#" class="btn btn-warning">Cancel Job</a>
+        </li>
+    </ul>
+</div>
+{% else %}
+<p>No jobs to show right now.</p>
+{% endfor %}
+{% endblock %}

@@ -6,6 +6,7 @@ from wtforms.validators import ValidationError, DataRequired, Email
 from wtforms.fields.html5 import DateField
 
 user_types = [('0', 'Volunteer'), ('1', 'Team Leader'), ('2', 'Coordinator'), ('3', 'Administrator')]
+times = [('AM', 'AM'), ('PM', 'PM')]
 
 
 class RegistrationForm(FlaskForm):
@@ -32,4 +33,12 @@ class LoginForm(FlaskForm):
 class NewsForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     body = TextAreaField('Body', validators=[DataRequired()])
-    submit = SubmitField('Post Announcement')
+    submit = SubmitField('Post')
+
+
+class JobForm(FlaskForm):
+    address = StringField('Address', validators=[DataRequired()])
+    date = DateField('Date', validators=[DataRequired()])
+    time = SelectField('Time', choices=times, validators=[DataRequired()])
+    notes = TextAreaField('Notes')
+    submit = SubmitField('New Job')
