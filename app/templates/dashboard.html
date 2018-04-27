@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>About you:</h2>
+<ul>
+    <li><b>Email:</b> {{ current_user.email }}</li>
+    <li><b>Full name:</b> {{ current_user.full_name }}</li>
+    <li><b>Join date:</b> {{ current_user.join_date }}</li>
+    <li><b>User type:</b> {{ current_user.user_type }}</li>
+</ul>
+<h2>Options:</h2>
+<ul>
+    <li><a href="{{ url_for('news') }}">News</a></li>
+    <li><a href="{{ url_for('logout') }}">Log out</a></li>
+</ul>
+{% endblock %}
