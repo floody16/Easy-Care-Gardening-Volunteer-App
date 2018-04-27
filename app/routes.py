@@ -1,8 +1,8 @@
 from app import app, db
 from app.forms import RegistrationForm, LoginForm, NewsForm
-from app.models import User, NewsItem
+from app.models import User, NewsItem, NewsItemAck
 
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import current_user, login_user, login_required, logout_user
 
 
@@ -84,6 +84,35 @@ def news():
         flash('News item posted!')
         return redirect(url_for('news'))
 
-    news_items = NewsItem.query.all()
+    newsitems = NewsItem.query.all()
 
-    return render_template('news.html', title='News', form=form, news_items=news_items)
+    return render_template('news.html', title='News', form=form, newsitems=newsitems)
+
+
+@app.route('/news/<newsitem_id>')
+@login_required
+def newsitem(newsitem_id):
+    newsitem = NewsItem.query.filter_by(id=newsitem_id).first()
+    acks = NewsItemAck.query.filter_by(newsitem_id=newsitem_id)
+
+    return render_template('newsitem.html', title=newsitem.title, newsitem=newsitem, acks=acks)
+
+
+@app.route('/ack/<newsitem_id>', methods=['GET', 'POST'])
+@login_required
+def ack(newsitem_id):
+    if not NewsItem.query.filter_by(id=newsitem_id).first():
+        flash('Cannot acknowledge a non-existent news item!')
+        return redirect(url_for('news'))
+
+    if NewsItemAck.query.filter_by(newsitem_id=newsitem_id, user_id=current_user.id).first():
+        flash('You have already acknowledged this news item!')
+        return redirect(url_for('news'))
+
+    ack = NewsItemAck(user_id=current_user.id, newsitem_id=newsitem_id)
+
+    db.session.add(ack)
+    db.session.commit()
+
+    flash('News item acknowledged!')
+    return redirect(url_for('news'))

@@ -5,7 +5,8 @@
 <ul>
     <li><b>Email:</b> {{ current_user.email }}</li>
     <li><b>Full name:</b> {{ current_user.full_name }}</li>
-    <li><b>Join date:</b> {{ current_user.join_date }}</li>
+    <li><b>Join date (ECG):</b> {{ current_user.join_date }}</li>
+    <li><b>Join date (app):</b> {{ current_user.created_at }}</li>
     <li><b>User type:</b> {{ current_user.user_type }}</li>
 </ul>
 <h2>Options:</h2>

@@ -1,29 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>New Item</h2>
-<form action="{{ url_for('news') }}" method="post">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.title.label }}<br>
-        {{ form.title(class_='form-control') }}<br>
-        {% for error in form.title.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+<h2 class="mb-3">New Item</h2>
+<div class="card mb-5">
+    <div class="card-body">
+        <form action="{{ url_for('news') }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title.label }}<br>
+                {{ form.title(class_='form-control') }}<br>
+                {% for error in form.title.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.body.label }}<br>
+                {{ form.body(class_='form-control') }}<br>
+                {% for error in form.body.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            {{ form.submit(class_='btn btn-primary') }}
+        </form>
     </div>
-    <div class="form-group">
-        {{ form.body.label }}<br>
-        {{ form.body(class_='form-control') }}<br>
-        {% for error in form.body.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+</div>
+<h2 class="mb-3">All News Items ({{ newsitems|length }})</h2>
+{% for newsitem in newsitems %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h3><a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}"">{{ newsitem.title }}</a></h3>
+
+        <p><i>posted at {{ newsitem.created_at }}</i></p>
+
+        <p>{{ newsitem.body }}</p>
+
+        {% if not newsitem.is_acknowledged(current_user.id) %}
+        <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-secondary">Achnowledge</a></li>
+        {% endif %}
+
+        <a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}">{{ newsitem.get_acknowledgements(newsitem.id)|length }} acknowledgement(s)</a>
     </div>
-    {{ form.submit(class_='btn btn-primary') }} <a href="{{ url_for('dashboard') }}">Dashboard</a>
-</form>
-<h2>All News Items</h2>
-<ul>
-    {% for news_item in news_items %}
-        <li>{{ news_item.title }} — {{ news_item.body }}</li>
-    {% endfor %}
-</ul>
+</div>
+{% endfor %}
 {% endblock %}

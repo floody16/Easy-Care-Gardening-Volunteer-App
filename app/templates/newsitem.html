@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card mb-5">
+    <div class="card-body">
+        <h3>{{ newsitem.title }}</h3>
+
+        <p><i>posted at {{ newsitem.created_at }}</i></p>
+
+        <p>{{ newsitem.body }}</p>
+
+        {% if not newsitem.is_acknowledged(current_user.id) %}
+        <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-secondary">Achnowledge</a></li>
+        {% endif %}
+
+        <a href="{{ url_for('news') }}">Show all news again</a>
+    </div>
+</div>
+
+<h2 class="mb-3">Acknowledgements</h2>
+{% for ack in acks %}
+<div class="card mb-3">
+    <div class="card-body">
+        Acknowledged by {{ ack.user_id }} at {{ ack.created_at }}
+    </div>
+</div>
+{% else %}
+<p>No acknowledgements yet.</p>
+{% endfor %}
+{% endblock %}
