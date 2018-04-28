@@ -11,9 +11,9 @@
     <div class="card-header {{ 'list-group-item-danger' if cancelled }} {{ 'list-group-item-warning' if changed }}">
         {% if not cancelled %}
         {% if opted_in %}
-        <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-secondary">Opt-out</a>
+        <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-secondary mr-2">Opt-out</a>
         {% else %}
-        <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-primary">Opt-in</a>
+        <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-primary mr-2">Opt-in</a>
         {% endif %}
         {% if changed %}
         <strong>Attention!</strong> — This job was edited. If applicable, please double-check the new details and opt-in/opt-out if necessary.

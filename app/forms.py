@@ -18,7 +18,7 @@ class RegistrationForm(FlaskForm):
     join_date = DateField('Join Date', validators=[DataRequired()])
     next_police_check = DateField('Next Police Check', validators=[DataRequired()])
     time_pref = SelectField('Time Preference', choices=times)
-    day_pref = SelectMultipleField('Day Preference', choices=days, validators=[DataRequired()])
+    day_prefs = SelectMultipleField('Day Preference', choices=days, validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):

@@ -12,7 +12,12 @@
         <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Next police check:</strong> {{ timestamp_pretty(current_user.next_police_check, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Availability:</strong>
-            {{ time_pref_pretty(current_user.time_pref) }} on: {{ current_user.day_pref }}
+            {{ time_pref_pretty(current_user.time_pref) }} on
+            {% for day_pref in day_prefs_pretty(current_user.day_pref) %}
+            <span class="badge badge-pill badge-primary">{{ day_pref }}</span>
+            {% else %}
+            <span class="badge badge-pill badge-warning">No days</span>
+            {% endfor %}
         </li>
     </ul>
 </div>

@@ -29,7 +29,7 @@ def register():
                     join_date=registration_form.join_date.data,
                     next_police_check=registration_form.next_police_check.data,
                     time_pref=registration_form.time_pref.data,
-                    day_pref=day_pref_to_binary(registration_form.day_pref.data))
+                    day_pref=day_pref_to_binary(registration_form.day_prefs.data))
         user.set_password(registration_form.password.data)
 
         db.session.add(user)

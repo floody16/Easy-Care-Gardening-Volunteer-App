@@ -82,6 +82,26 @@ def time_pref_pretty(time_pref):
     return str(TimePreference(time_pref))
 
 
+def day_prefs_pretty(day_prefs):
+    """
+    Converts a 6-character string denoting day preferences into a list of days (Monday, Tuesday, ... , Saturday).
+
+    :param day_prefs: 6-character binary string where each bit represents availability for that day (Sunday excluded).
+    :return: A list of days that match day_prefs.
+    """
+    if not day_prefs or day_prefs == '000000':
+        return ''
+
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    pretty = []
+
+    for i in range(0, 6):
+        if day_prefs[i] == '1':
+            pretty.append(days[i])
+
+    return pretty
+
+
 def timestamp_pretty(timestamp, show_time=True):
     """
     Converts a timestamp to a pretty format with optional time. Only the date is shown otherwise.

@@ -11,17 +11,32 @@
 <body>
 <div class="container mb-5">
     <div class="bg-light">
-        <img src="{{ url_for('static', filename='logo.jpg') }}" class="img-fluid mx-auto d-block" alt="Easy Care Gardening Logo">
+        <a href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('index') }}">
+            <img src="{{ url_for('static', filename='logo.jpg') }}" class="img-fluid mx-auto d-block" alt="Easy Care Gardening Logo">
+        </a>
+        <h5 class="text-center mb-0 p-2"><strong>App Prototype</strong></h5>
     </div>
-    <ul class="nav nav-pills nav-fill mb-5 bg-light">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+    {% if current_user.is_authenticated %}
+    <ul class="nav justify-content-center mb-5 bg-light p-3">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">Profile</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('roster') }}">Roster</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('feedback') }}">Feedback</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">News</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('jobs') }}">Manage Jobs</a></li>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ user_type_pretty(current_user.user_type) }}
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ url_for('jobs') }}">Manage Jobs</a>
+            <a class="dropdown-item" href="{{ url_for('news') }}">Manage News</a>
+            <a class="dropdown-item" href="{{ url_for('feedback') }}">Manage Feedback</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Manage Job Sheets</a>
+            <a class="dropdown-item" href="#">Edit Job Sheet Template</a>
+        </div>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
-    <h1 class="mb-5 text-center"><strong>{{ title if title or 'ECGV' }}</strong></h1>
+    {% endif %}
+    <h1 class="mt-5 mb-5 text-center"><strong>{{ title if title or 'ECGV' }}</strong></h1>
     {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
     {% for category, message in messages %}

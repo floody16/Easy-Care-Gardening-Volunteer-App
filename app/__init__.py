@@ -14,8 +14,9 @@ login.login_message = 'You must be logged in to do that.'
 login.login_message_category = 'danger'
 
 from app import routes, models
-from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty
+from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty, day_prefs_pretty
 
 app.jinja_env.globals.update(user_type_pretty=user_type_pretty,
                              time_pref_pretty=time_pref_pretty,
+                             day_prefs_pretty=day_prefs_pretty,
                              timestamp_pretty=timestamp_pretty)
