@@ -9,16 +9,19 @@
     <title>{{ title + ' — ' if title }}ECGV</title>
 </head>
 <body>
-<div class="container mt-5 mb-5">
+<div class="container mb-5">
+    <div class="bg-light">
+        <img src="{{ url_for('static', filename='logo.jpg') }}" class="img-fluid mx-auto d-block" alt="Easy Care Gardening Logo">
+    </div>
     <ul class="nav nav-pills nav-fill mb-5 bg-light">
         <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('roster') }}">Roster</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('feedback') }}">Feedback</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">News</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('jobs') }}">Manage Jobs</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
-    <h1 class="mb-5 text-center">{{ title if title or 'ECGV' }}</h1>
+    <h1 class="mb-5 text-center"><strong>{{ title if title or 'ECGV' }}</strong></h1>
     {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
     {% for category, message in messages %}

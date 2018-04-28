@@ -5,18 +5,12 @@
     <div class="col-sm-6">
         <div class="card">
             <div class="card-header">
-                <h3 class="float-left">About you</h3>
+                <h3>{{ current_user.full_name }}</h3>
+                <a href="{{ url_for('profile') }}" class="btn btn-primary btn-block">View Profile</a>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong class="text-dark">Full name:</strong> {{ current_user.full_name }}</li>
-                <li class="list-group-item"><strong class="text-dark">Email:</strong> {{ current_user.email }}</li>
                 <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, show_time=False) }}</li>
                 <li class="list-group-item"><strong class="text-dark">Next police check:</strong> {{ timestamp_pretty(current_user.next_police_check, show_time=False) }}</li>
-                <li class="list-group-item"><strong class="text-dark">Created at:</strong> {{ timestamp_pretty(current_user.created_at) }}</li>
-                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ user_type_pretty(current_user.user_type) }}</li>
-                <li class="list-group-item"><strong class="text-dark">Availability:</strong>
-                    {{ time_pref_pretty(current_user.time_pref) }}, {{ current_user.day_pref }}
-                </li>
             </ul>
         </div>
     </div>
@@ -43,7 +37,7 @@
     <div class="col-sm-4">
         <div class="card bg-light">
             <div class="card-body">
-                <a href="{{ url_for('dashboard') }}"><h3 class="card-title">Feedback</h3></a>
+                <a href="{{ url_for('feedback') }}"><h3 class="card-title">Feedback</h3></a>
                 <p class="card-text">View and manage feedback regarding past jobs.</p>
             </div>
         </div>

@@ -30,7 +30,7 @@ class TimePreference(Enum):
         return {
             'AM': 'Half-day (Morning)',
             'PM': 'Half-day (Afternoon)',
-            'AP': 'Full-day (No preference)',
+            'AP': 'Full-day',
         }.get(self.value)
 
 

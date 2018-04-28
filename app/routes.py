@@ -1,6 +1,6 @@
 from app import app, db
 from app.utils import get_suitable_jobs, day_pref_to_binary
-from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm
+from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm, ChangePasswordForm
 from app.models import User, NewsItem, NewsItemAcknowledgement, Job, OptIn
 
 from flask import render_template, redirect, url_for, flash
@@ -75,6 +75,27 @@ def logout():
 @login_required
 def dashboard():
     return render_template('dashboard.html', title='Dashboard')
+
+
+@app.route('/profile/', methods=['GET', 'POST'])
+@login_required
+def profile():
+    change_password_form = ChangePasswordForm()
+
+    if change_password_form.validate_on_submit():
+        user = User.query.filter_by(id=current_user.id).scalar()
+
+        if not user.check_password(change_password_form.old_password.data):
+            flash('Old password is incorrect.', 'danger')
+            return redirect(url_for('profile'))
+
+        user.set_password(change_password_form.new_password.data)
+        db.session.commit()
+
+        flash('Password changed.', 'success')
+        return redirect(url_for('profile'))
+
+    return render_template('profile.html', title=current_user.full_name, form=change_password_form)
 
 
 @app.route('/news/', methods=['GET', 'POST'])
@@ -257,3 +278,9 @@ def opt_ins_toggle(job_id):
 
     flash('Opted-in.', 'success')
     return redirect(url_for('roster'))
+
+
+@app.route('/feedback/')
+@login_required
+def feedback():
+    return render_template('feedback.html', title='Feedback')

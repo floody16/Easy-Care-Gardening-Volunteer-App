@@ -2,7 +2,7 @@ from app.models import User
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, TextAreaField, SelectMultipleField
-from wtforms.validators import ValidationError, DataRequired, Email
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from wtforms.fields.html5 import DateField
 
 user_types = [('0', 'Volunteer'), ('1', 'Team Leader'), ('2', 'Coordinator'), ('3', 'Administrator')]
@@ -46,3 +46,10 @@ class JobForm(FlaskForm):
     time = SelectField('Time', choices=times[:-1], validators=[DataRequired()])
     notes = TextAreaField('Notes')
     submit = SubmitField('New Job')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
+    new_password_again = PasswordField('Repeat', validators=[DataRequired(), EqualTo('new_password', message='Passwords must match.')])
+    submit = SubmitField('Change Password')
