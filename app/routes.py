@@ -150,7 +150,7 @@ def roster():
     suitable_jobs = get_suitable_jobs(jobs, current_user.time_pref, current_user.day_pref)
 
     data = {
-        'title': 'Your Roster',
+        'title': 'Roster',
         'jobs': suitable_jobs
     }
 

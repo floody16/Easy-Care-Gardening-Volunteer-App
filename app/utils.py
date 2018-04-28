@@ -12,12 +12,11 @@ def get_suitable_jobs(jobs, time_prefs, day_prefs):
     :return: Jobs where job.date and job.time satisfy user's availability (time_prefs, day_prefs).
     """
     suitable_jobs = []
-
     available_days = get_day_prefs(day_prefs)
 
     for job in jobs:
         if job.date.weekday() in available_days:
-            if job.time in time_prefs or not time_prefs:
+            if job.time in time_prefs or time_prefs == 'AP':
                 suitable_jobs.append(job)
 
     return suitable_jobs
