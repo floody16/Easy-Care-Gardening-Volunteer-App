@@ -10,11 +10,11 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong class="text-dark">Full name:</strong> {{ current_user.full_name }}</li>
                 <li class="list-group-item"><strong class="text-dark">Email:</strong> {{ current_user.email }}</li>
-                <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, showtime=False) }}</li>
+                <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, show_time=False) }}</li>
                 <li class="list-group-item"><strong class="text-dark">Created at:</strong> {{ timestamp_pretty(current_user.created_at) }}</li>
-                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ usertype_pretty(current_user.user_type) }}</li>
+                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ user_type_pretty(current_user.user_type) }}</li>
                 <li class="list-group-item"><strong class="text-dark">Availability:</strong>
-                    {{ timepref_pretty(current_user.time_pref) }}, {{ current_user.day_pref }}
+                    {{ time_pref_pretty(current_user.time_pref) }}, {{ current_user.day_pref }}
                 </li>
             </ul>
         </div>

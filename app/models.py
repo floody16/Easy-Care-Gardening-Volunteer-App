@@ -29,8 +29,9 @@ class TimePreference(Enum):
     def __str__(self):
         return {
             'AM': 'Half-day (Morning)',
-            'PM': 'Half-day (Afternoon)'
-        }.get(self.value, 'Full-day (No preference)')
+            'PM': 'Half-day (Afternoon)',
+            '': 'Full-day (No preference)',
+        }.get(self.value)
 
 
 @login.user_loader
@@ -49,6 +50,7 @@ class User(UserMixin, db.Model):
     time_pref = db.Column(db.String(2))
     day_pref = db.Column(db.String(6))
     join_date = db.Column(db.DateTime)
+    next_police_check = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     def set_password(self, password):
@@ -59,7 +61,7 @@ class User(UserMixin, db.Model):
 
 
 class NewsItem(db.Model):
-    __tablename__ = 'newsitem'
+    __tablename__ = 'news_item'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -67,25 +69,25 @@ class NewsItem(db.Model):
     body = db.Column(db.String(2048))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
-    author = db.relationship('User', backref='author', lazy='select')
-    acknowledgements = db.relationship('NewsItemAck', backref='acknowledger', lazy='dynamic')
+    author = db.relationship('User', backref='news_item')
+    acknowledgements = db.relationship('NewsItemAcknowledgement', backref='news_item', lazy='dynamic')
 
-    def get_acknowledgements(self, newsitem_id):
-        return self.acknowledgements.filter_by(newsitem_id=newsitem_id).order_by(NewsItemAck.created_at).all()
+    def get_acknowledgements(self, news_item_id):
+        return self.acknowledgements.filter_by(news_item_id=news_item_id).order_by(NewsItemAcknowledgement.created_at).all()
 
     def is_acknowledged(self, user_id):
         return self.acknowledgements.filter_by(user_id=user_id).count() > 0
 
 
-class NewsItemAck(db.Model):
-    __tablename__ = 'newsitem_ack'
+class NewsItemAcknowledgement(db.Model):
+    __tablename__ = 'news_item_acknowledgement'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    newsitem_id = db.Column(db.Integer, db.ForeignKey('newsitem.id'))
+    news_item_id = db.Column(db.Integer, db.ForeignKey('news_item.id'))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
-    user = db.relationship('User', backref='acknowledgements', lazy='select')
+    acknowledger = db.relationship('User', backref='news_item_acknowledgement')
 
 
 class Job(db.Model):
@@ -101,4 +103,22 @@ class Job(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
-    author = db.relationship('User', backref='poster', lazy='select')
+    author = db.relationship('User', backref='job')
+    opt_ins = db.relationship('OptIn', backref='job', lazy='dynamic')
+
+    def get_opt_ins(self, job_id):
+        return self.opt_ins.filter_by(job_id=job_id).order_by(OptIn.created_at).all()
+
+    def opted_into(self, user_id):
+        return self.opt_ins.filter_by(user_id=user_id).order_by(OptIn.created_at).count() > 0
+
+
+class OptIn(db.Model):
+    __tablename__ = 'opt_in'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
+    opter = db.relationship('User', backref='opt_in')

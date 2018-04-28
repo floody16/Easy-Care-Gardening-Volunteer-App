@@ -6,7 +6,7 @@
 <div class="card mb-3">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
-        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, showtime=False) }}</li>
+        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
         <li class="list-group-item"><strong class="text-dark">Notes:</strong>
             {% if job.notes %}
@@ -16,7 +16,11 @@
             {% endif %}
         </li>
         <li class="list-group-item">
-            <a href="#" class="btn btn-secondary">Opt-in</a>
+            {% if job.opted_into(current_user.id) %}
+                <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-secondary">Opt-out</a>
+            {% else %}
+                <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-primary">Opt-in</a>
+            {% endif %}
         </li>
     </ul>
 </div>

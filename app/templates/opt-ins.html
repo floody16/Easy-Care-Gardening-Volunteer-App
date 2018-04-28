@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-3">Opt-ins ({{ opt_ins|length }})
+<a href="{{ url_for('jobs') }}" class="btn btn-primary btn-lg">Back to Jobs</a></h2>
+{% for opt_in in opt_ins %}
+<div class="card mb-3">
+    <div class="card-body">
+        ✅ {{ opt_in.opter.full_name }} opted in on {{ timestamp_pretty(opt_in.created_at) }}
+    </div>
+</div>
+{% else %}
+<p>No opt-ins yet.</p>
+{% endfor %}
+{% endblock %}

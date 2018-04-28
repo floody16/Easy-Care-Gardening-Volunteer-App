@@ -28,19 +28,19 @@
         </form>
     </div>
 </div>
-<h2 class="mb-3">All News Items ({{ newsitems|length }})</h2>
-{% for newsitem in newsitems %}
+<h2 class="mb-3">All News Items ({{ news_items|length }})</h2>
+{% for news_item in news_items %}
 <div class="card mb-3">
     <div class="card-body">
-        <h3><a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}"">{{ newsitem.title }}</a></h3>
-        <p><i>posted on {{ timestamp_pretty(newsitem.created_at) }} by {{ newsitem.author.full_name }}</i></p>
-        <p>{{ newsitem.body }}</p>
-        {% if not newsitem.is_acknowledged(current_user.id) %}
-        <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-primary">Achnowledge</a></li>
+        <h3>{{ news_item.title }}</h3>
+        <p><i>posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
+        <p>{{ news_item.body }}</p>
+        {% if not news_item.is_acknowledged(current_user.id) %}
+        <a href="{{ url_for('acknowledgements_new', news_item_id=news_item.id) }}" class="btn btn-primary">Achnowledge</a></li>
         {% else %}
         <button class="btn btn-secondary" disabled>Acknowledged</button>
         {% endif %}
-        <a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}">{{ newsitem.get_acknowledgements(newsitem.id)|length }} acknowledgement(s)</a>
+        <a href="{{ url_for('acknowledgments_show', news_item_id=news_item.id) }}">{{ news_item.get_acknowledgements(news_item.id)|length }} acknowledgement(s)</a>
     </div>
 </div>
 {% else %}

@@ -16,7 +16,8 @@ class RegistrationForm(FlaskForm):
     full_name = StringField('Full Name', validators=[DataRequired()])
     user_type = SelectField('User Type', choices=user_types, validators=[DataRequired()])
     join_date = DateField('Join Date', validators=[DataRequired()])
-    time_pref = SelectField('Time Preference', choices=times, validators=[DataRequired()])
+    next_police_check = DateField('Next Police Check', validators=[DataRequired()])
+    time_pref = SelectField('Time Preference', choices=times)
     day_pref = SelectMultipleField('Day Preference', choices=days, validators=[DataRequired()])
     submit = SubmitField('Register')
 

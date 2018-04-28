@@ -52,7 +52,7 @@
     <div class="card-header"><strong>Created by:</strong> {{ job.author.full_name }} on {{ timestamp_pretty(job.created_at) }}</div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
-        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, showtime=False) }}</li>
+        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
         <li class="list-group-item"><strong class="text-dark">Notes:</strong>
             {% if job.notes %}
@@ -62,6 +62,7 @@
             {% endif %}
         </li>
         <li class="list-group-item">
+            <a href="{{ url_for('opt_ins_show', job_id=job.id) }}" class="btn btn-primary">View {{ job.get_opt_ins(job.id)|length }} opt-in(s)</a>
             <a href="#" class="btn btn-warning">Edit</a>
             <a href="#" class="btn btn-warning">Cancel Job</a>
         </li>
