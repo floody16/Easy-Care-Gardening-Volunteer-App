@@ -1,8 +1,36 @@
 from app import db, login
+from enum import Enum
 
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+
+
+class UserType(Enum):
+    VOLUNTEER = 0
+    TEAM_LEADER = 1
+    COORDINATOR = 2
+    ADMINISTRATOR = 3
+
+    def __str__(self):
+        return {
+            0: 'Volunteer',
+            1: 'Team Leader',
+            2: 'Coordinator',
+            3: 'Administrator'
+        }.get(self.value)
+
+
+class TimePreference(Enum):
+    HALF_DAY_MORNING = 'AM'
+    HALF_DAY_AFTERNOON = 'PM'
+    FULL_DAY = ''
+
+    def __str__(self):
+        return {
+            'AM': 'Half-day (Morning)',
+            'PM': 'Half-day (Afternoon)'
+        }.get(self.value, 'Full-day (No preference)')
 
 
 @login.user_loader

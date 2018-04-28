@@ -6,15 +6,16 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="float-left">About you</h3>
-                <a href="#" class="btn btn-primary float-right">Edit</a>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong class="text-dark">Full name:</strong> {{ current_user.full_name }}</li>
                 <li class="list-group-item"><strong class="text-dark">Email:</strong> {{ current_user.email }}</li>
                 <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ current_user.join_date }}</li>
                 <li class="list-group-item"><strong class="text-dark">Created at:</strong> {{ current_user.created_at }}</li>
-                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ current_user.user_type }}</li>
-                <li class="list-group-item"><strong class="text-dark">Availability:</strong> {{ current_user.time_pref }}, {{ current_user.day_pref }}</li>
+                <li class="list-group-item"><strong class="text-dark">User type:</strong> {{ usertype_pretty(current_user.user_type) }}</li>
+                <li class="list-group-item"><strong class="text-dark">Availability:</strong>
+                    {{ timepref_pretty(current_user.time_pref) }}, {{ current_user.day_pref }}
+                </li>
             </ul>
         </div>
     </div>

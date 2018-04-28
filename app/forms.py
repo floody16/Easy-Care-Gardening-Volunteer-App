@@ -7,7 +7,7 @@ from wtforms.fields.html5 import DateField
 
 user_types = [('0', 'Volunteer'), ('1', 'Team Leader'), ('2', 'Coordinator'), ('3', 'Administrator')]
 times = [('AM', 'AM'), ('PM', 'PM'), ('', 'AM/PM')]
-days = [('MO', 'Monday'), ('TU', 'Tuesday'), ('WE', 'Wednesday'), ('TH', 'Thursday'), ('FR', 'Friday'), ('SA', 'Saturday')]
+days = [('0', 'Monday'), ('1', 'Tuesday'), ('2', 'Wednesday'), ('3', 'Thursday'), ('4', 'Friday'), ('5', 'Saturday')]
 
 
 class RegistrationForm(FlaskForm):
@@ -42,6 +42,6 @@ class NewsForm(FlaskForm):
 class JobForm(FlaskForm):
     address = StringField('Address', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired()])
-    time = SelectField('Time', choices=times, validators=[DataRequired()])
+    time = SelectField('Time', choices=times[:-1], validators=[DataRequired()])
     notes = TextAreaField('Notes')
     submit = SubmitField('New Job')

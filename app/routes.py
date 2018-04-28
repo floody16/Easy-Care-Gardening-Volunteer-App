@@ -1,9 +1,11 @@
 from app import app, db
+from app.utils import get_suitable_jobs
 from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm
 from app.models import User, NewsItem, NewsItemAck, Job
 
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
+import datetime
 
 
 @app.route('/')
@@ -125,8 +127,12 @@ def ack(newsitem_id):
 @login_required
 def roster():
     jobs = Job.query.all()
+    time_prefs = current_user.time_pref
+    day_prefs = current_user.day_pref
 
-    return render_template('roster.html', title='Roster', jobs=jobs)
+    suitable_jobs = get_suitable_jobs(jobs, time_prefs, day_prefs)
+
+    return render_template('roster.html', title='Roster', jobs=suitable_jobs)
 
 
 @app.route('/jobs', methods=['GET', 'POST'])
@@ -135,6 +141,14 @@ def jobs():
     form = JobForm()
 
     if form.validate_on_submit():
+        if form.date.data < datetime.date.today():
+            flash('Date cannot be in the past.', 'danger')
+            return redirect(url_for('jobs'))
+
+        if form.date.data.weekday() == 6:
+            flash('Date cannot fall on a Sunday.', 'danger')
+            return redirect(url_for('jobs'))
+
         job = Job(user_id=current_user.id,
                   address=form.address.data,
                   date=form.date.data,
