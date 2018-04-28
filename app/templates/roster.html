@@ -3,27 +3,36 @@
 {% block content %}
 <h2 class="mb-3">Available Jobs ({{ jobs|length }})</h2>
 {% for job in jobs %}
+{% with %}
+{% set cancelled = job.cancelled %}
+{% set changed = job.created_at != job.updated_at %}
+{% set opted_in = job.opted_into(current_user.id) %}
 <div class="card mb-3">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
         <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
-        <li class="list-group-item"><strong class="text-dark">Notes:</strong>
-            {% if job.notes %}
-            {{ job.notes }}
+        {% if job.notes %}<li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>{% endif %}
+        {% if not cancelled %}
+        <li class="list-group-item {{ 'list-group-item-warning' if changed }}">
+            {% if opted_in %}
+            <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-secondary">Opt-out</a>
             {% else %}
-            <i>None</i>
+            <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-primary">Opt-in</a>
+            {% endif %}
+            {% if changed %}
+            <strong>Attention!</strong> — This job was edited. If applicable, please double-check the new details and opt-in/opt-out if necessary.
             {% endif %}
         </li>
-        <li class="list-group-item">
-            {% if job.opted_into(current_user.id) %}
-                <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-secondary">Opt-out</a>
-            {% else %}
-                <a href="{{ url_for('opt_ins_toggle', job_id=job.id) }}" class="btn btn-primary">Opt-in</a>
-            {% endif %}
+        {% else %}
+        <li class="list-group-item list-group-item-danger">
+            <strong>Attention!</strong> — This job has been cancelled.
+            {{ 'You have opted-in already so please do not attend.' if job.opted_into(current_user.id) else 'You will not be able to opt-into it.' }}
         </li>
+        {% endif %}
     </ul>
 </div>
+{% endwith %}
 {% else %}
 <p>No available jobs to show right now. Maybe update your availability?</p>
 {% endfor %}

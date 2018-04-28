@@ -54,17 +54,11 @@
         <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
         <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
-        <li class="list-group-item"><strong class="text-dark">Notes:</strong>
-            {% if job.notes %}
-            {{ job.notes }}
-            {% else %}
-            <i>None</i>
-            {% endif %}
-        </li>
+        {% if job.notes %}<li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>{% endif %}
         <li class="list-group-item">
             <a href="{{ url_for('opt_ins_show', job_id=job.id) }}" class="btn btn-primary">View {{ job.get_opt_ins(job.id)|length }} opt-in(s)</a>
             <a href="#" class="btn btn-warning">Edit</a>
-            <a href="#" class="btn btn-warning">Cancel Job</a>
+            <a href="{{ url_for('job_cancel', job_id=job.id) }}" class="btn btn-warning">{{ 'Un-c' if job.cancelled else 'C' }}ancel Job</a>
         </li>
     </ul>
 </div>

@@ -36,11 +36,11 @@
         <p><i>posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
         <p>{{ news_item.body }}</p>
         {% if not news_item.is_acknowledged(current_user.id) %}
-        <a href="{{ url_for('acknowledgements_new', news_item_id=news_item.id) }}" class="btn btn-primary">Achnowledge</a></li>
+        <a href="{{ url_for('acknowledgement_new', news_item_id=news_item.id) }}" class="btn btn-primary">Achnowledge</a></li>
         {% else %}
         <button class="btn btn-secondary" disabled>Acknowledged</button>
         {% endif %}
-        <a href="{{ url_for('acknowledgments_show', news_item_id=news_item.id) }}">{{ news_item.get_acknowledgements(news_item.id)|length }} acknowledgement(s)</a>
+        <a href="{{ url_for('acknowledgment_show', news_item_id=news_item.id) }}">{{ news_item.get_acknowledgements(news_item.id)|length }} acknowledgement(s)</a>
     </div>
 </div>
 {% else %}

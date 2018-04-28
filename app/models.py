@@ -100,8 +100,8 @@ class Job(db.Model):
     time = db.Column(db.String(2))
     notes = db.Column(db.String(1024))
     cancelled = db.Column(db.Boolean, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
-    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now())
 
     author = db.relationship('User', backref='job')
     opt_ins = db.relationship('OptIn', backref='job', lazy='dynamic')

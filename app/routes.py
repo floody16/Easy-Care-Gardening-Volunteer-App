@@ -110,7 +110,7 @@ def acknowledgments():
 
 @app.route('/acknowledgements/<news_item_id>')
 @login_required
-def acknowledgments_show(news_item_id):
+def acknowledgment_show(news_item_id):
     acknowledgements = NewsItemAcknowledgement.query.filter_by(news_item_id=news_item_id).order_by(NewsItemAcknowledgement.created_at).all()
 
     data = {
@@ -123,7 +123,7 @@ def acknowledgments_show(news_item_id):
 
 @app.route('/acknowledgements/new/<news_item_id>')
 @login_required
-def acknowledgements_new(news_item_id=None):
+def acknowledgement_new(news_item_id=None):
     news_item = NewsItem.query.filter_by(id=news_item_id).scalar()
 
     if not news_item:
@@ -188,6 +188,26 @@ def jobs():
     return render_template('jobs.html', title='Jobs', form=job_form, jobs=jobs)
 
 
+@app.route('/jobs/cancel/<job_id>')
+@login_required
+def job_cancel(job_id):
+    job = Job.query.filter_by(id=job_id).scalar()
+
+    if not job:
+        flash('Job does not exist.', 'danger')
+        return redirect(url_for('jobs'))
+
+    job.cancelled = not job.cancelled
+    db.session.commit()
+
+    if job.cancelled:
+        flash('Job cancelled.', 'success')
+    else:
+        flash('Job un-cancelled.', 'success')
+
+    return redirect(url_for('jobs'))
+
+
 @app.route('/opt-ins/')
 @login_required
 def opt_ins():
@@ -209,8 +229,14 @@ def opt_ins_show(job_id):
 @app.route('/opt-ins/toggle/<job_id>')
 @login_required
 def opt_ins_toggle(job_id):
-    if not Job.query.filter_by(id=job_id).scalar():
+    job = Job.query.filter_by(id=job_id).scalar()
+
+    if not job:
         flash('Cannot opt-into/opt-out of a non-existent job.', 'danger')
+        return redirect(url_for('roster'))
+
+    if job.cancelled:
+        flash('Cannot opt-into/opt-out of a cancelled job.', 'danger')
         return redirect(url_for('roster'))
 
     opt_in = OptIn.query.filter_by(job_id=job_id, user_id=current_user.id).scalar()
