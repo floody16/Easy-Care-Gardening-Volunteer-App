@@ -1,5 +1,5 @@
 from app import app, db
-from app.utils import get_suitable_jobs
+from app.utils import get_suitable_jobs, day_pref_to_binary
 from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm
 from app.models import User, NewsItem, NewsItemAcknowledgement, Job, OptIn
 
@@ -26,7 +26,10 @@ def register():
         user = User(email=registration_form.email.data,
                     full_name=registration_form.full_name.data,
                     user_type=registration_form.user_type.data,
-                    join_date=registration_form.join_date.data)
+                    join_date=registration_form.join_date.data,
+                    next_police_check=registration_form.next_police_check.data,
+                    time_pref=registration_form.time_pref.data,
+                    day_pref=day_pref_to_binary(registration_form.day_pref.data))
         user.set_password(registration_form.password.data)
 
         db.session.add(user)

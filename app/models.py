@@ -24,13 +24,13 @@ class UserType(Enum):
 class TimePreference(Enum):
     HALF_DAY_MORNING = 'AM'
     HALF_DAY_AFTERNOON = 'PM'
-    FULL_DAY = ''
+    FULL_DAY = 'AP'
 
     def __str__(self):
         return {
             'AM': 'Half-day (Morning)',
             'PM': 'Half-day (Afternoon)',
-            '': 'Full-day (No preference)',
+            'AP': 'Full-day (No preference)',
         }.get(self.value)
 
 

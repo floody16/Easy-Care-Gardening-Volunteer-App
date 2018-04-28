@@ -9,7 +9,7 @@ def get_suitable_jobs(jobs, time_prefs, day_prefs):
     :param jobs: All jobs on the database.
     :param time_prefs: 2-character string denoting time preference. Empty if no preference.
     :param day_prefs: 6-character binary string where each bit represents availability for that day (Sunday excluded).
-    :return: Jobs where job.date and job.time satisfy user's availability (timeprefs, dayprefs).
+    :return: Jobs where job.date and job.time satisfy user's availability (time_prefs, day_prefs).
     """
     suitable_jobs = []
 
@@ -46,6 +46,21 @@ def get_day_prefs(day_prefs):
     return days
 
 
+def day_pref_to_binary(day_prefs):
+    """
+    Does the inverse of get_day_prefs().
+
+    :param day_prefs: A list of integers where each element is an available day's index position.
+    :return: 6-character binary string where each bit represents availability for that day (Sunday excluded).
+    """
+    binary = ['0', '0', '0', '0', '0', '0']
+
+    for day_pref in day_prefs:
+        binary[int(day_pref)] = '1'
+
+    return ''.join(binary)
+
+
 def user_type_pretty(user_type):
     """
     Converts an integer denoting user type (0 = Volunteer, 1 = Team Leader, 2 = Coordinator, 3 = Administrator) into prettier string form.
@@ -59,7 +74,7 @@ def user_type_pretty(user_type):
 
 def time_pref_pretty(time_pref):
     """
-    Converts a 2-character string denoting time preference ('AM' = Half-day (Morning), 'PM' = Half-day (Afternoon), '' = Full day/no preference)
+    Converts a 2-character string denoting time preference ('AM' = Half-day (Morning), 'PM' = Half-day (Afternoon), 'AP' = Full day/no preference)
     into verbose string form. See models.py for __str__ function.
 
     :param time_pref: Time preference for a particular user in 2-character string form.

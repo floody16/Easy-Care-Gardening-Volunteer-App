@@ -6,7 +6,7 @@ from wtforms.validators import ValidationError, DataRequired, Email
 from wtforms.fields.html5 import DateField
 
 user_types = [('0', 'Volunteer'), ('1', 'Team Leader'), ('2', 'Coordinator'), ('3', 'Administrator')]
-times = [('AM', 'AM'), ('PM', 'PM'), ('', 'AM/PM')]
+times = [('AM', 'AM'), ('PM', 'PM'), ('AP', 'AM/PM')]
 days = [('0', 'Monday'), ('1', 'Tuesday'), ('2', 'Wednesday'), ('3', 'Thursday'), ('4', 'Friday'), ('5', 'Saturday')]
 
 
