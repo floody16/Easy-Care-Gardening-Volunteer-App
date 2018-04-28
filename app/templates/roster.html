@@ -2,12 +2,23 @@
 
 {% block content %}
 <h2 class="mb-3">This Month</h2>
+{% for job in jobs %}
 <div class="card mb-3">
     <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong class="text-dark">Address:</strong> Wallaby Way</li>
-        <li class="list-group-item"><strong class="text-dark">Date:</strong> 2018-03-28</li>
-        <li class="list-group-item"><strong class="text-dark">Time:</strong> Morning (09:00 - 12:00)</li>
-        <li class="list-group-item"><strong class="text-dark">Notes:</strong><br><i>None.</i></li>
+        <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
+        <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ job.date }}</li>
+        <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
+        <li class="list-group-item"><strong class="text-dark">Notes:</strong>
+            {% if job.notes %}
+            {{ job.notes }}
+            {% else %}
+            <i>None</i>
+            {% endif %}
+        </li>
+        <li class="list-group-item">
+            <a href="#" class="btn btn-secondary">Opt-in</a>
+        </li>
     </ul>
 </div>
+{% endfor %}
 {% endblock %}

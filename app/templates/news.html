@@ -33,17 +33,13 @@
 <div class="card mb-3">
     <div class="card-body">
         <h3><a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}"">{{ newsitem.title }}</a></h3>
-
-        <p><i>posted at {{ newsitem.created_at }}</i></p>
-
+        <p><i>posted at {{ newsitem.created_at }} by {{ newsitem.author.full_name }}</i></p>
         <p>{{ newsitem.body }}</p>
-
         {% if not newsitem.is_acknowledged(current_user.id) %}
         <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-primary">Achnowledge</a></li>
         {% else %}
         <button class="btn btn-secondary" disabled>Acknowledged</button>
         {% endif %}
-
         <a href="{{ url_for('newsitem', newsitem_id=newsitem.id) }}">{{ newsitem.get_acknowledgements(newsitem.id)|length }} acknowledgement(s)</a>
     </div>
 </div>

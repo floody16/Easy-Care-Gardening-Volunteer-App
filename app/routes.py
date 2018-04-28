@@ -2,7 +2,7 @@ from app import app, db
 from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm
 from app.models import User, NewsItem, NewsItemAck, Job
 
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
 
 
@@ -15,7 +15,7 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        flash('You are already logged in!', 'info')
+        flash('You are already logged in.', 'info')
         return redirect(url_for('dashboard'))
 
     register = RegistrationForm()
@@ -31,7 +31,7 @@ def register():
         db.session.commit()
 
         login_user(user)
-        flash('You are now registered. Welcome!', 'success')
+        flash('Registration successful.', 'success')
         return redirect(url_for('dashboard'))
 
     return render_template('register.html', title='Register', form=register)
@@ -40,7 +40,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        flash('You are already logged in!', 'info')
+        flash('You are already logged in.', 'info')
         return redirect(url_for('dashboard'))
 
     login = LoginForm()
@@ -49,7 +49,7 @@ def login():
         user = User.query.filter_by(email=login.email.data).first()
 
         if user is None or not user.check_password(login.password.data):
-            flash('Invalid credentials. Please try again', 'danger')
+            flash('Invalid credentials.', 'danger')
             return redirect(url_for('login'))
 
         login_user(user)
@@ -62,7 +62,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    flash('You were logged out. Goodbye.', 'info')
+    flash('Log out successful.', 'info')
     return redirect(url_for('login'))
 
 
@@ -83,7 +83,7 @@ def news():
         db.session.add(news)
         db.session.commit()
 
-        flash('News item posted!', 'success')
+        flash('News item posted successfully.', 'success')
         return redirect(url_for('news'))
 
     newsitems = NewsItem.query.all()
@@ -95,20 +95,21 @@ def news():
 @login_required
 def newsitem(newsitem_id):
     newsitem = NewsItem.query.filter_by(id=newsitem_id).first()
-    acks = NewsItemAck.query.filter_by(newsitem_id=newsitem_id).all()
 
-    return render_template('newsitem.html', title=newsitem.title, newsitem=newsitem, acks=acks)
+    return render_template('newsitem.html', title=newsitem.title, newsitem=newsitem)
 
 
-@app.route('/ack/<newsitem_id>', methods=['GET', 'POST'])
+@app.route('/ack/<newsitem_id>')
 @login_required
 def ack(newsitem_id):
-    if not NewsItem.query.filter_by(id=newsitem_id).first():
-        flash('Cannot acknowledge a non-existent news item!', 'danger')
+    newsitem = NewsItem.query.filter_by(id=newsitem_id).first()
+
+    if not newsitem:
+        flash('News item does not exist.', 'danger')
         return redirect(url_for('news'))
 
-    if NewsItemAck.query.filter_by(newsitem_id=newsitem_id, user_id=current_user.id).first():
-        flash('You have already acknowledged that news item!', 'danger')
+    if newsitem.is_acknowledged(current_user.id):
+        flash('News item already acknowledged.', 'danger')
         return redirect(url_for('news'))
 
     ack = NewsItemAck(user_id=current_user.id, newsitem_id=newsitem_id)
@@ -116,14 +117,16 @@ def ack(newsitem_id):
     db.session.add(ack)
     db.session.commit()
 
-    flash('News item acknowledged!', 'success')
+    flash('News item acknowledged.', 'success')
     return redirect(url_for('news'))
 
 
 @app.route('/roster')
 @login_required
 def roster():
-    return render_template('roster.html', title='Roster')
+    jobs = Job.query.all()
+
+    return render_template('roster.html', title='Roster', jobs=jobs)
 
 
 @app.route('/jobs', methods=['GET', 'POST'])
@@ -132,12 +135,16 @@ def jobs():
     form = JobForm()
 
     if form.validate_on_submit():
-        job = Job(address=form.address.data, date=form.date.data, time=form.time.data, notes=form.notes.data)
+        job = Job(user_id=current_user.id,
+                  address=form.address.data,
+                  date=form.date.data,
+                  time=form.time.data,
+                  notes=form.notes.data)
 
         db.session.add(job)
         db.session.commit()
 
-        flash('Job created successfully!', 'success')
+        flash('Job created successfully.', 'success')
         return redirect(url_for('jobs'))
 
     jobs = Job.query.all()

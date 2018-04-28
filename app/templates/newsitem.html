@@ -4,29 +4,27 @@
 <div class="card mb-5">
     <div class="card-body">
         <h3>{{ newsitem.title }}</h3>
-
-        <p><i>posted at {{ newsitem.created_at }}</i></p>
-
+        <p><i>posted at {{ newsitem.created_at }} by {{ newsitem.author.full_name }}</i></p>
         <p>{{ newsitem.body }}</p>
-
         {% if not newsitem.is_acknowledged(current_user.id) %}
         <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-primary">Achnowledge</a></li>
         {% else %}
         <button class="btn btn-secondary" disabled>Acknowledged</button>
         {% endif %}
-
         <a href="{{ url_for('news') }}">Show all news again</a>
     </div>
 </div>
 
+{% with acks = newsitem.get_acknowledgements(newsitem.id) %}
 <h2 class="mb-3">Acknowledgements ({{ acks|length }})</h2>
 {% for ack in acks %}
 <div class="card mb-3">
     <div class="card-body">
-        Acknowledged by {{ ack.user_id }} at {{ ack.created_at }}
+        ✅ Acknowledged by {{ ack.user.full_name }} at {{ ack.created_at }}
     </div>
 </div>
 {% else %}
 <p>No acknowledgements yet.</p>
 {% endfor %}
+{% endwith %}
 {% endblock %}

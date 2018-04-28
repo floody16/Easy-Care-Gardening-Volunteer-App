@@ -1,44 +1,83 @@
 {% extends "base.html" %}
 
 {% block content %}
-<hr>
-<form action="{{ url_for('register') }}" method="post">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-        {{ form.email.label }}<br>
-        {{ form.email(class_='form-control') }}<br>
-        {% for error in form.email.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
+<h2 class="mb-3">Register</h2>
+<div class="card mb-5 bg-light">
+    <div class="card-body">
+        <form action="{{ url_for('register') }}" method="post">
+            <div class="alert alert-info" role="alert">
+                <p>You have been granted access to the Easy Care Gardening volunteering app!</p>
+                To continue, please check your details below and provide a password to log in with.
+                If your details happen to be incorrect, do <strong>not</strong> continue but contact an administrator instead.
+                They will make the necessary changes for you.
+            </div>
+            {{ form.hidden_tag() }}
+            <div class="form-group row">
+                {{ form.email.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.email(class_='form-control') }}
+                    {% for error in form.email.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.full_name.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.full_name(class_='form-control') }}
+                    {% for error in form.full_name.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.user_type.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.user_type(class_='form-control') }}
+                    {% for error in form.user_type.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.join_date.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.join_date(class_='form-control') }}
+                    {% for error in form.join_date.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.time_pref.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.time_pref(class_='form-control') }}
+                    {% for error in form.time_pref.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.day_pref.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.day_pref(class_='form-control') }}
+                    {% for error in form.day_pref.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+            <div class="form-group row">
+                {{ form.password.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.password(class_='form-control') }}
+                    {% for error in form.password.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.submit(class_='btn btn-primary') }}
+        </form>
     </div>
-    <div class="form-group">
-        {{ form.full_name.label }}<br>
-        {{ form.full_name(class_='form-control') }}<br>
-        {% for error in form.full_name.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </div>
-    <div class="form-group">
-        {{ form.password.label }}<br>
-        {{ form.password(class_='form-control') }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </div>
-    <div class="form-group">
-        {{ form.user_type.label }}<br>
-        {{ form.user_type(class_='form-control') }}<br>
-        {% for error in form.user_type.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </div>
-    <div class="form-group">
-        {{ form.join_date.label }}<br>
-        {{ form.join_date(class_='form-control') }}<br>
-        {% for error in form.join_date.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </div>
-    {{ form.submit(class_='btn btn-primary') }} <a href="{{ url_for('login') }}">or login?</a>
-</form>
+</div>
 {% endblock %}

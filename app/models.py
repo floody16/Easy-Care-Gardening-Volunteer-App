@@ -15,9 +15,11 @@ class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True)
-    password_hash = db.Column(db.String(128))
-    user_type = db.Column(db.Integer)
     full_name = db.Column(db.String(64))
+    user_type = db.Column(db.Integer)
+    password_hash = db.Column(db.String(128))
+    time_pref = db.Column(db.String(2))
+    day_pref = db.Column(db.String(6))
     join_date = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
@@ -37,6 +39,7 @@ class NewsItem(db.Model):
     body = db.Column(db.String(2048))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
+    author = db.relationship('User', backref='author', lazy='select')
     acknowledgements = db.relationship('NewsItemAck', backref='acknowledger', lazy='dynamic')
 
     def get_acknowledgements(self, newsitem_id):
@@ -54,12 +57,20 @@ class NewsItemAck(db.Model):
     newsitem_id = db.Column(db.Integer, db.ForeignKey('newsitem.id'))
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
+    user = db.relationship('User', backref='acknowledgements', lazy='select')
+
 
 class Job(db.Model):
     __tablename__ = 'job'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     address = db.Column(db.String(64))
     date = db.Column(db.DateTime)
     time = db.Column(db.String(2))
     notes = db.Column(db.String(1024))
+    cancelled = db.Column(db.Boolean, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
+    author = db.relationship('User', backref='poster', lazy='select')

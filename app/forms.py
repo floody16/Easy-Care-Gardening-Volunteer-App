@@ -1,12 +1,13 @@
 from app.models import User
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, SelectField, SubmitField, TextAreaField, SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired, Email
 from wtforms.fields.html5 import DateField
 
 user_types = [('0', 'Volunteer'), ('1', 'Team Leader'), ('2', 'Coordinator'), ('3', 'Administrator')]
-times = [('AM', 'AM'), ('PM', 'PM')]
+times = [('AM', 'AM'), ('PM', 'PM'), ('', 'AM/PM')]
+days = [('MO', 'Monday'), ('TU', 'Tuesday'), ('WE', 'Wednesday'), ('TH', 'Thursday'), ('FR', 'Friday'), ('SA', 'Saturday')]
 
 
 class RegistrationForm(FlaskForm):
@@ -15,6 +16,8 @@ class RegistrationForm(FlaskForm):
     full_name = StringField('Full Name', validators=[DataRequired()])
     user_type = SelectField('User Type', choices=user_types, validators=[DataRequired()])
     join_date = DateField('Join Date', validators=[DataRequired()])
+    time_pref = SelectField('Time Preference', choices=times, validators=[DataRequired()])
+    day_pref = SelectMultipleField('Day Preference', choices=days, validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
