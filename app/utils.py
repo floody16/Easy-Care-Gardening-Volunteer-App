@@ -1,5 +1,7 @@
 from app.models import UserType, TimePreference
 
+import datetime
+
 
 def get_suitable_jobs(jobs, timeprefs, dayprefs):
     """
@@ -21,6 +23,29 @@ def get_suitable_jobs(jobs, timeprefs, dayprefs):
                 suitable_jobs.append(job)
 
     return suitable_jobs
+
+
+def get_dayprefs(dayprefs):
+    """
+    Converts a 6-character string denoting day preferences into a list of integers.
+    Each integer corresponds to an available day of the week's index position:
+        Monday = 0
+        Tuesday = 1
+        ...
+        Saturday = 5
+
+    '101010' (Monday, Wednesday, Friday) => [0, 2, 4]
+
+    :param dayprefs: 6-character binary string where each bit represents availability for that day (Sunday excluded).
+    :return: A list of integers where each element is an available day's index position.
+    """
+    days = []
+
+    for i in range(0, 6):
+        if dayprefs[i] == '1':
+            days.append(i)
+
+    return days
 
 
 def usertype_pretty(usertype):
@@ -45,24 +70,15 @@ def timepref_pretty(timepref):
     return str(TimePreference(timepref))
 
 
-def get_dayprefs(dayprefs):
+def timestamp_pretty(timestamp, showtime=True):
     """
-    Converts a 6-character string denoting day preferences into a list of integers.
-    Each integer corresponds to an available day of the week's index position:
-        Monday = 0
-        Tuesday = 1
-        ...
-        Saturday = 5
+    Converts a timestamp to a pretty format with optional time. Only the date is shown otherwise.
 
-    '101010' (Monday, Wednesday, Friday) => [0, 2, 4]
-
-    :param dayprefs: 6-character binary string where each bit represents availability for that day (Sunday excluded).
-    :return: A list of integers where each element is an available day's index position.
+    :param timestamp: The timestamp to be converted.
+    :param showtime: Whether to show or exclude time from timestamp if applicable. True by default.
+    :return: Pretty timestamp.
     """
-    days = []
+    if not showtime:
+        return timestamp.strftime('%d %B %Y (%A)')
 
-    for i in range(0, 6):
-        if dayprefs[i] == '1':
-            days.append(i)
-
-    return days
+    return timestamp.strftime('%d %B %Y at %H:%M')

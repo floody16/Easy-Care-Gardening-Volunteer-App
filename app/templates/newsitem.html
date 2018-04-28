@@ -4,7 +4,7 @@
 <div class="card mb-5">
     <div class="card-body">
         <h3>{{ newsitem.title }}</h3>
-        <p><i>posted at {{ newsitem.created_at }} by {{ newsitem.author.full_name }}</i></p>
+        <p><i>posted on {{ timestamp_pretty(newsitem.created_at) }} by {{ newsitem.author.full_name }}</i></p>
         <p>{{ newsitem.body }}</p>
         {% if not newsitem.is_acknowledged(current_user.id) %}
         <a href="{{ url_for('ack', newsitem_id=newsitem.id) }}" class="btn btn-primary">Achnowledge</a></li>
@@ -20,7 +20,7 @@
 {% for ack in acks %}
 <div class="card mb-3">
     <div class="card-body">
-        ✅ Acknowledged by {{ ack.user.full_name }} at {{ ack.created_at }}
+        ✅ Acknowledged by {{ ack.user.full_name }} on {{ timestamp_pretty(ack.created_at) }}
     </div>
 </div>
 {% else %}

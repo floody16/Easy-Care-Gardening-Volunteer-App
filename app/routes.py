@@ -88,7 +88,7 @@ def news():
         flash('News item posted successfully.', 'success')
         return redirect(url_for('news'))
 
-    newsitems = NewsItem.query.all()
+    newsitems = NewsItem.query.order_by(NewsItem.created_at).all()
 
     return render_template('news.html', title='News', form=form, newsitems=newsitems)
 
@@ -126,7 +126,7 @@ def ack(newsitem_id):
 @app.route('/roster')
 @login_required
 def roster():
-    jobs = Job.query.all()
+    jobs = Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all()
     time_prefs = current_user.time_pref
     day_prefs = current_user.day_pref
 
@@ -161,6 +161,6 @@ def jobs():
         flash('Job created successfully.', 'success')
         return redirect(url_for('jobs'))
 
-    jobs = Job.query.all()
+    jobs = Job.query.order_by(Job.date).all()
 
     return render_template('jobs.html', title='Jobs', form=form, jobs=jobs)

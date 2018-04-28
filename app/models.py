@@ -71,7 +71,7 @@ class NewsItem(db.Model):
     acknowledgements = db.relationship('NewsItemAck', backref='acknowledger', lazy='dynamic')
 
     def get_acknowledgements(self, newsitem_id):
-        return self.acknowledgements.filter_by(newsitem_id=newsitem_id).all()
+        return self.acknowledgements.filter_by(newsitem_id=newsitem_id).order_by(NewsItemAck.created_at).all()
 
     def is_acknowledged(self, user_id):
         return self.acknowledgements.filter_by(user_id=user_id).count() > 0
