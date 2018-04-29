@@ -17,11 +17,11 @@ def index():
     if job_form.validate_on_submit():
         if job_form.date.data < datetime.date.today():
             flash('Date cannot be in the past.', 'danger')
-            return redirect(url_for('job'))
+            return redirect(url_for('job.index'))
 
         if job_form.date.data.weekday() == 6:
             flash('Date cannot fall on a Sunday.', 'danger')
-            return redirect(url_for('job'))
+            return redirect(url_for('job.index'))
 
         new_job = Job(user_id=current_user.id,
                       address=job_form.address.data,
