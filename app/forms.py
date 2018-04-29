@@ -1,4 +1,5 @@
 from app.models import User
+from app.utils import past_jobs_pretty
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SelectField, SubmitField, TextAreaField, SelectMultipleField
@@ -17,7 +18,7 @@ class RegistrationForm(FlaskForm):
     user_type = SelectField('User Type', choices=user_types, validators=[DataRequired()])
     join_date = DateField('Join Date', validators=[DataRequired()])
     next_police_check = DateField('Next Police Check', validators=[DataRequired()])
-    time_pref = SelectField('Time Preference', choices=times)
+    time_pref = SelectField('Time Preference', choices=times, validators=[DataRequired()])
     day_prefs = SelectMultipleField('Day Preference', choices=days, validators=[DataRequired()])
     submit = SubmitField('Register')
 
@@ -53,3 +54,13 @@ class ChangePasswordForm(FlaskForm):
     new_password = PasswordField('New Password', validators=[DataRequired()])
     new_password_again = PasswordField('Repeat', validators=[DataRequired(), EqualTo('new_password', message='Passwords must match.')])
     submit = SubmitField('Change Password')
+
+
+class FeedbackForm(FlaskForm):
+    job = SelectField('Past Job', validators=[DataRequired()])
+    body = TextAreaField('Feedback', validators=[DataRequired()])
+    submit = SubmitField('Submit Feedback')
+
+    def __init__(self, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        self.job.choices = past_jobs_pretty()

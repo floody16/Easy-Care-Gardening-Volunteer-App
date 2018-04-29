@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="mb-3">New Item</h2>
 <div class="card mb-5 bg-light">
+    <div class="card-header">
+        <h2 class="mb-3">New News Item</h2>
+    </div>
     <div class="card-body">
         <form action="{{ url_for('news') }}" method="post">
             {{ form.hidden_tag() }}
@@ -33,7 +35,7 @@
 <div class="card mb-3">
     <div class="card-body">
         <h3>{{ news_item.title }}</h3>
-        <p><i>posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
+        <p><i>Posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
         <p>{{ news_item.body }}</p>
         {% if not news_item.is_acknowledged(current_user.id) %}
         <a href="{{ url_for('acknowledgement_new', news_item_id=news_item.id) }}" class="btn btn-primary">Achnowledge</a></li>

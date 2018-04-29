@@ -1,7 +1,7 @@
 from app import app, db
 from app.utils import get_suitable_jobs, day_pref_to_binary
-from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm, ChangePasswordForm
-from app.models import User, NewsItem, NewsItemAcknowledgement, Job, OptIn
+from app.forms import RegistrationForm, LoginForm, NewsForm, JobForm, ChangePasswordForm, FeedbackForm
+from app.models import User, NewsItem, NewsItemAcknowledgement, Job, OptIn, Feedback
 
 from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_user, login_required, logout_user
@@ -280,7 +280,22 @@ def opt_ins_toggle(job_id):
     return redirect(url_for('roster'))
 
 
-@app.route('/feedback/')
+@app.route('/feedback/', methods=['GET', 'POST'])
 @login_required
 def feedback():
-    return render_template('feedback.html', title='Feedback')
+    feedback_form = FeedbackForm()
+
+    if feedback_form.validate_on_submit():
+        new_feedback = Feedback(user_id=current_user.id,
+                                job_id=feedback_form.job.data,
+                                body=feedback_form.body.data)
+
+        db.session.add(new_feedback)
+        db.session.commit()
+
+        flash('Feedback submitted.', 'success')
+        return redirect(url_for('feedback'))
+
+    all_feedback = Feedback.query.all()
+
+    return render_template('feedback.html', title='Feedback', form=feedback_form, all_feedback=all_feedback)

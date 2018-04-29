@@ -26,10 +26,10 @@
             {{ user_type_pretty(current_user.user_type) }}
         </a>
         <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{ url_for('feedback') }}">View Feedback</a>
             <a class="dropdown-item" href="{{ url_for('jobs') }}">Manage Jobs</a>
             <a class="dropdown-item" href="{{ url_for('news') }}">Manage News</a>
-            <a class="dropdown-item" href="{{ url_for('feedback') }}">Manage Feedback</a>
-            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Manage Users</a>
             <a class="dropdown-item" href="#">Manage Job Sheets</a>
             <a class="dropdown-item" href="#">Edit Job Sheet Template</a>
         </div>

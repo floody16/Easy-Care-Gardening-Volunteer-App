@@ -106,6 +106,10 @@ class Job(db.Model):
     author = db.relationship('User', backref='job')
     opt_ins = db.relationship('OptIn', backref='job', lazy='dynamic')
 
+    @staticmethod
+    def get_past_jobs():
+        return Job.query.filter(Job.date < datetime.datetime.utcnow()).all()
+
     def get_opt_ins(self, job_id):
         return self.opt_ins.filter_by(job_id=job_id).order_by(OptIn.created_at).all()
 
@@ -122,3 +126,16 @@ class OptIn(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     opter = db.relationship('User', backref='opt_in')
+
+
+class Feedback(db.Model):
+    __tablename__ = 'feedback'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
+    body = db.Column(db.String(2048))
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
+    author = db.relationship('User', backref='feedback')
+    job = db.relationship('Job', backref='feedback')

@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="mb-3">New Job</h2>
 <div class="card mb-5 bg-light">
+    <div class="card-header">
+        <h2 class="mb-3">New Job</h2>
+    </div>
     <div class="card-body">
         <form action="{{ url_for('jobs') }}" method="post">
             {{ form.hidden_tag() }}
@@ -54,7 +56,9 @@
         <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
         <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
         <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
-        {% if job.notes %}<li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>{% endif %}
+        {% if job.notes %}
+        <li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>
+        {% endif %}
         <li class="list-group-item">
             <a href="{{ url_for('opt_ins_show', job_id=job.id) }}" class="btn btn-primary">View {{ job.get_opt_ins(job.id)|length }} opt-in(s)</a>
             <a href="#" class="btn btn-warning">Edit</a>

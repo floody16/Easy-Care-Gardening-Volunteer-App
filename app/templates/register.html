@@ -67,10 +67,10 @@
                 </div>
             </div>
             <div class="form-group row">
-                {{ form.day_pref.label(class_='col-sm-2 col-form-label') }}
+                {{ form.day_prefs.label(class_='col-sm-2 col-form-label') }}
                 <div class="col-sm-10">
-                    {{ form.day_pref(class_='form-control') }}
-                    {% for error in form.day_pref.errors %}
+                    {{ form.day_prefs(class_='form-control') }}
+                    {% for error in form.day_prefs.errors %}
                     <p class="text-danger">{{ error }}</p>
                     {% endfor %}
                 </div>

@@ -1,5 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="mb-3">Feedback</h2>
+<div class="card mb-5 bg-light">
+    <div class="card-header">
+        <h2 class="mb-3">New Feedback</h2>
+        <h5>You can only leave feedback for past jobs, which you can choose from below.</h5>
+    </div>
+    <div class="card-body">
+        {% if form.job.choices %}
+        <form action="{{ url_for('feedback') }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group row">
+                {{ form.job.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.job(class_='form-control') }}
+                    {% for error in form.job.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.body.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.body(class_='form-control') }}
+                    {% for error in form.body.errors %}
+                    <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {{ form.submit(class_='btn btn-primary float-right') }}
+        </form>
+        {% else %}
+        No past jobs. Please try again later.
+        {% endif %}
+    </div>
+</div>
+<h2 class="mb-3">All Feedback ({{ all_feedback|length }})</h2>
+{% for feedback in all_feedback %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h3>{{ feedback.job.address }}</h3>
+        <p><i>Left on {{ timestamp_pretty(feedback.created_at) }} by {{ feedback.author.full_name }}</i></p>
+        <p>{{ feedback.body }}</p>
+    </div>
+</div>
+{% else %}
+<p>No feedback to show right now.</p>
+{% endfor %}
 {% endblock %}
