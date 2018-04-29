@@ -11,29 +11,29 @@
 <body>
 <div class="container mb-5">
     <div class="bg-light">
-        <a href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('index') }}">
+        <a href="{{ url_for('user.dashboard') if current_user.is_authenticated else url_for('user.login') }}">
             <img src="{{ url_for('static', filename='logo.jpg') }}" class="img-fluid mx-auto d-block" alt="Easy Care Gardening Logo">
         </a>
         <h5 class="text-center mb-0 p-2"><strong>App Prototype</strong></h5>
     </div>
     {% if current_user.is_authenticated %}
     <ul class="nav justify-content-center mb-5 bg-light p-3">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('roster') }}">Roster</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('feedback') }}">Feedback</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('news') }}">News</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.roster') }}">Roster</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('job.feedback') }}">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('news.index') }}">News</a></li>
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             {{ user_type_pretty(current_user.user_type) }}
         </a>
         <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{ url_for('feedback') }}">View Feedback</a>
-            <a class="dropdown-item" href="{{ url_for('jobs') }}">Manage Jobs</a>
-            <a class="dropdown-item" href="{{ url_for('news') }}">Manage News</a>
+            <a class="dropdown-item" href="{{ url_for('job.feedback') }}">View Feedback</a>
+            <a class="dropdown-item" href="{{ url_for('job.index') }}">Manage Jobs</a>
+            <a class="dropdown-item" href="{{ url_for('news.index') }}">Manage News</a>
             <a class="dropdown-item" href="#">Manage Users</a>
             <a class="dropdown-item" href="#">Manage Job Sheets</a>
             <a class="dropdown-item" href="#">Edit Job Sheet Template</a>
         </div>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a></li>
     </ul>
     {% endif %}
     <h1 class="mt-5 mb-5 text-center"><strong>{{ title if title or 'ECGV' }}</strong></h1>

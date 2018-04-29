@@ -8,7 +8,7 @@
     </div>
     <div class="card-body">
         {% if form.job.choices %}
-        <form action="{{ url_for('feedback') }}" method="post">
+        <form action="{{ url_for('job.feedback') }}" method="post">
             {{ form.hidden_tag() }}
             <div class="form-group row">
                 {{ form.job.label(class_='col-sm-2 col-form-label') }}

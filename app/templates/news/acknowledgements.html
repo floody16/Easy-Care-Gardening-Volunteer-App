@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2 class="mb-3">Acknowledgements ({{ acknowledgements|length }})
-<a href="{{ url_for('news') }}" class="btn btn-primary btn-lg">Back to News</a></h2>
+<a href="{{ url_for('news.index') }}" class="btn btn-primary btn-lg">Back to News</a></h2>
 {% for acknowledgement in acknowledgements %}
 <div class="card mb-3">
     <div class="card-body">

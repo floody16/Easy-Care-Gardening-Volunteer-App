@@ -1,4 +1,5 @@
 from flask import Flask
+
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -10,11 +11,18 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
-login.login_message = 'You must be logged in to do that.'
+login.login_message = 'Please log in first.'
 login.login_message_category = 'danger'
 
-from app import routes, models
+from app import models
 from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty, day_prefs_pretty
+from .views import acknowledgement, job, news, opt_in, user
+
+app.register_blueprint(acknowledgement.acknowledgement)
+app.register_blueprint(job.job)
+app.register_blueprint(news.news)
+app.register_blueprint(opt_in.opt_in)
+app.register_blueprint(user.user)
 
 app.jinja_env.globals.update(user_type_pretty=user_type_pretty,
                              time_pref_pretty=time_pref_pretty,
