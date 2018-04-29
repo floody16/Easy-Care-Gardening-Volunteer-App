@@ -65,6 +65,9 @@ def past_jobs_pretty():
     past_jobs = []
 
     for job in Job.get_past_jobs():
-        past_jobs.append((str(job.id), '{} on {}, {}'.format(job.address, timestamp_pretty(job.date, show_time=False), job.time)))
+        past_jobs.append((str(job.id),
+                          '{} on {}, {}'.format(job.address,
+                                                timestamp_pretty(job.date, show_time=False),
+                                                job.time)))
 
     return past_jobs

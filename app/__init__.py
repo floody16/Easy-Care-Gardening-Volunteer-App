@@ -10,7 +10,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
-login.login_view = 'login'
+login.login_view = 'user.login'
 login.login_message = 'Please log in first.'
 login.login_message_category = 'danger'
 
