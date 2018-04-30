@@ -21,7 +21,7 @@ def show(job_id):
 
     all_opt_ins = OptIn.query.filter_by(job_id=job_id).all()
 
-    return render_template('job/opt_in.html', title='Job #' + job_id + ' opt-ins', opt_ins=all_opt_ins)
+    return render_template('job/opt_in.html', title='Job #' + job_id + ' Opt-ins', opt_ins=all_opt_ins)
 
 
 @opt_in.route('/toggle/<job_id>')

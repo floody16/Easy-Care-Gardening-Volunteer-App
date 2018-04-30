@@ -20,7 +20,7 @@ def show(news_item_id):
 
     data = {
         'acknowledgements': acknowledgements,
-        'title': 'News item #' + news_item_id + ' acknowledgments'
+        'title': 'News Item #' + news_item_id + ' Acknowledgments'
     }
 
     return render_template('news/acknowledgements.html', **data)

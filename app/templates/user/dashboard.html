@@ -1,76 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header">
-                <h3>{{ current_user.full_name }}</h3>
-                <a href="{{ url_for('user.profile') }}" class="btn btn-primary btn-block">View Profile</a>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, show_time=False) }}</li>
-                <li class="list-group-item"><strong class="text-dark">Next police check:</strong> {{ timestamp_pretty(current_user.next_police_check, show_time=False) }}</li>
-            </ul>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-header"><h3>Weather</h3></div>
-            <div class="card-body">
-                <a href="https://www.accuweather.com/en/au/sydney/22889/weather-forecast/22889" class="aw-widget-legal">
-                    <!--
-                    By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.
-                    -->
-                </a>
-                <div id="awcc1525003331706" class="aw-widget-current" data-locationkey="22889" data-unit="c" data-language="en-us" data-useip="false" data-uid="awcc1525003331706"></div>
-                <script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
+    <div class="row mb-4">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ current_user.full_name }}</h3>
+                    <a href="{{ url_for('user.profile') }}" class="btn btn-primary btn-block">View Profile</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong class="text-dark">Member since:</strong> {{ timestamp_pretty(current_user.join_date, show_time=False) }}</li>
+                    <li class="list-group-item"><strong class="text-dark">Next police check:</strong> {{ timestamp_pretty(current_user.next_police_check, show_time=False) }}</li>
+                </ul>
             </div>
         </div>
-    </div>
-</div>
-<div class="row mb-4">
-    <div class="col-sm-4">
-        <div class="card bg-light">
-            <div class="card-body">
-                <a href="{{ url_for('user.roster') }}"><h3 class="card-title">Roster</h3></a>
-                <p class="card-text">View and opt-into gardening jobs available to you.</p>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header"><h3>Weather</h3></div>
+                <div class="card-body">
+                    <a href="https://www.accuweather.com/en/au/sydney/22889/weather-forecast/22889" class="aw-widget-legal">
+                        <!--
+                        By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.
+                        -->
+                    </a>
+                    <div id="awcc1525003331706" class="aw-widget-current" data-locationkey="22889" data-unit="c" data-language="en-us" data-useip="false" data-uid="awcc1525003331706"></div>
+                    <script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
-        <div class="card bg-light">
-            <div class="card-body">
-                <a href="{{ url_for('job.feedback') }}"><h3 class="card-title">Feedback</h3></a>
-                <p class="card-text">View and manage feedback regarding past jobs.</p>
+    <div class="row mb-4">
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <a href="{{ url_for('user.roster') }}"><h3 class="card-title">Roster</h3></a>
+                    <p class="card-text">View and opt-into gardening jobs available to you.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <a href="{{ url_for('job.feedback') }}"><h3 class="card-title">Feedback</h3></a>
+                    <p class="card-text">View and manage feedback regarding past jobs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <a href="{{ url_for('news.index') }}"><h3 class="card-title">News</h3></a>
+                    <p class="card-text">View and manage updates by Easy Care Gardening coordinators.</p>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
-        <div class="card bg-light">
-            <div class="card-body">
-                <a href="{{ url_for('news.index') }}"><h3 class="card-title">News</h3></a>
-                <p class="card-text">View and manage updates by Easy Care Gardening coordinators.</p>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <a href="{{ url_for('job.index') }}"><h3 class="card-title">Manage Jobs</h3></a>
+                    <p class="card-text">View and manage the jobs a volunteer may opt-in to.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <a href="{{ url_for('user.logout') }}"><h3 class="card-title">Log out</h3></a>
+                    <p class="card-text">Keep your account safe by logging out when finished.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-4">
-        <div class="card bg-light">
-            <div class="card-body">
-                <a href="{{ url_for('job.index') }}"><h3 class="card-title">Manage Jobs</h3></a>
-                <p class="card-text">View and manage the jobs a volunteer may opt-in to.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="card bg-light">
-            <div class="card-body">
-                <a href="{{ url_for('user.logout') }}"><h3 class="card-title">Log out</h3></a>
-                <p class="card-text">Keep your account safe by logging out when finished.</p>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
