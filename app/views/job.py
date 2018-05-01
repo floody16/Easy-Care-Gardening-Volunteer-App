@@ -35,7 +35,7 @@ def index():
         flash('Job created successfully.', 'success')
         return redirect(url_for('job.index'))
 
-    all_jobs = Job.query.order_by(Job.date).all()
+    all_jobs = Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all()
 
     return render_template('job/index.html', title='Jobs', form=job_form, jobs=all_jobs)
 

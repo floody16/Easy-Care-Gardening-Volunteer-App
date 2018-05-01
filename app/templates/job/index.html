@@ -48,7 +48,7 @@
             </form>
         </div>
     </div>
-    <h2 class="mb-3">All Jobs ({{ jobs|length }})</h2>
+    <h2 class="mb-3">Upcoming Jobs ({{ jobs|length }})</h2>
     {% for job in jobs %}
         <div class="card mb-3">
             <div class="card-header"><strong>Created by:</strong> {{ job.author.full_name }} on {{ timestamp_pretty(job.created_at) }}</div>
@@ -60,13 +60,19 @@
                     <li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>
                 {% endif %}
                 <li class="list-group-item">
-                    <a href="{{ url_for('opt_in.show', job_id=job.id) }}" class="btn btn-primary">View {{ job.get_opt_ins(job.id)|length }} opt-in(s)</a>
+                    {% with n_opt_ins = job.get_opt_ins(job.id)|length %}
+                        {% if n_opt_ins > 0 %}
+                            <a href="{{ url_for('opt_in.show', job_id=job.id) }}" class="btn btn-primary">View {{ n_opt_ins }} opt-in(s)</a>
+                        {% else %}
+                            <button class="btn btn-secondary" disabled>0 opt-ins</button>
+                        {% endif %}
+                    {% endwith %}
                     <a href="#" class="btn btn-warning">Edit</a>
                     <a href="{{ url_for('job.cancel', job_id=job.id) }}" class="btn btn-warning">{{ 'Un-c' if job.cancelled else 'C' }}ancel Job</a>
                 </li>
             </ul>
         </div>
     {% else %}
-        <p>No jobs to show right now.</p>
+        <p>No future jobs to show right now.</p>
     {% endfor %}
 {% endblock %}
