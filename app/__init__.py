@@ -17,7 +17,7 @@ login.login_message_category = 'danger'
 
 from app import models
 from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty, day_prefs_pretty
-from .views import acknowledgement, job, news, opt_in, user
+from app.views import acknowledgement, job, news, opt_in, user
 
 app.register_blueprint(acknowledgement.acknowledgement)
 app.register_blueprint(job.job)
