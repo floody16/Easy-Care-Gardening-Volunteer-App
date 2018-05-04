@@ -1,5 +1,7 @@
+from gtk.keysyms import Find
+
 from app import db
-from app.forms import RegistrationForm, LoginForm, ChangePasswordForm
+from app.forms import RegistrationForm, LoginForm, ChangePasswordForm, FindUserForm
 from app.models import User, Job
 from app.utils import day_pref_to_binary, get_suitable_jobs
 
@@ -10,7 +12,7 @@ import datetime
 user = Blueprint('user', __name__, template_folder='templates')
 
 
-@user.route('/register/', methods=['GET', 'POST'])
+@user.route('/user/register/', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         flash('You are already logged in.', 'info')
@@ -38,7 +40,7 @@ def register():
     return render_template('user/register.html', title='Register', form=registration_form)
 
 
-@user.route('/login/', methods=['GET', 'POST'])
+@user.route('/user/login/', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         flash('You are already logged in.', 'info')
@@ -68,7 +70,7 @@ def dashboard():
     return render_template('user/dashboard.html', title='Dashboard')
 
 
-@user.route('/profile/', methods=['GET', 'POST'])
+@user.route('/user/profile/', methods=['GET', 'POST'])
 @login_required
 def profile():
     change_password_form = ChangePasswordForm()
@@ -89,7 +91,7 @@ def profile():
     return render_template('user/profile.html', title=current_user.full_name, form=change_password_form)
 
 
-@user.route('/roster/')
+@user.route('/user/roster/')
 @login_required
 def roster():
     jobs = Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all()
@@ -102,7 +104,19 @@ def roster():
     return render_template('user/roster.html', **data)
 
 
-@user.route('/logout/')
+@user.route('/user/manage/')
+def manage():
+    find_user_form = FindUserForm()
+
+    data = {
+        'title': 'Manage Users',
+        'form': find_user_form
+    }
+
+    return render_template('user/manage.html', **data)
+
+
+@user.route('/user/logout/')
 def logout():
     logout_user()
     flash('Log out successful.', 'info')

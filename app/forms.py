@@ -64,3 +64,8 @@ class FeedbackForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         self.job.choices = past_jobs_pretty()
+
+
+class FindUserForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Find')

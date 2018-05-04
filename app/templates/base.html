@@ -32,7 +32,7 @@
                 <a class="dropdown-item" href="{{ url_for('news.index') }}">Manage News</a>
                 <a class="dropdown-item" href="{{ url_for('job.index') }}">Manage Jobs</a>
                 <a class="dropdown-item" href="#">Edit Job Sheet Template</a>
-                <a class="dropdown-item" href="#">Manage Users</a>
+                <a class="dropdown-item" href="{{ url_for('user.manage') }}">Manage Users</a>
             </div>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a></li>
         </ul>
