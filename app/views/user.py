@@ -1,5 +1,3 @@
-from gtk.keysyms import Find
-
 from app import db
 from app.forms import RegistrationForm, LoginForm, ChangePasswordForm, FindUserForm, FeedbackForm
 from app.models import User, Job, Feedback

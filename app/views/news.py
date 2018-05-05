@@ -34,7 +34,7 @@ def index():
     return render_template('news/index.html', **data)
 
 
-@news.route('/<news_item_id>/edit/', methods=['GET', 'POST'])
+@news.route('/<int:news_item_id>/edit/', methods=['GET', 'POST'])
 @login_required
 def edit(news_item_id):
     news_item = NewsItem.query.filter_by(id=news_item_id).scalar()
@@ -60,7 +60,7 @@ def edit(news_item_id):
     return render_template('news/index.html', **data)
 
 
-@news.route('/<news_item_id>/delete/')
+@news.route('/<int:news_item_id>/delete/')
 @login_required
 def delete(news_item_id):
     news_item = NewsItem.query.filter_by(id=news_item_id).scalar()
@@ -75,7 +75,7 @@ def delete(news_item_id):
     return redirect(url_for('news.index'))
 
 
-@news.route('/<news_item_id>/acknowledge/')
+@news.route('/<int:news_item_id>/acknowledge/')
 @login_required
 def acknowledge(news_item_id):
     news_item = NewsItem.query.filter_by(id=news_item_id).scalar()
@@ -96,14 +96,14 @@ def acknowledge(news_item_id):
     return redirect(url_for('news.index'))
 
 
-@news.route('/<news_item_id>/acknowledgements/', methods=['GET', 'POST'])
+@news.route('/<int:news_item_id>/acknowledgements/', methods=['GET', 'POST'])
 @login_required
 def acknowledgements(news_item_id):
     all_acknowledgements = NewsItemAcknowledgement.query.filter_by(news_item_id=news_item_id).order_by(NewsItemAcknowledgement.created_at).all()
 
     data = {
         'acknowledgements': all_acknowledgements,
-        'title': 'News Item #' + news_item_id + ' Acknowledgments'
+        'title': 'News Item #' + str(news_item_id) + ' Acknowledgments'
     }
 
     return render_template('news/acknowledgements.html', **data)

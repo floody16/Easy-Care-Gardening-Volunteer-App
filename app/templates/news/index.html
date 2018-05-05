@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% include 'news/new.html' %}
+    {% include 'news/form.html' %}
     {% if not editing %}
         <h2 class="mb-3">All News Items ({{ news_items|length }})</h2>
         {% for news_item in news_items %}
             {% include 'news/list.html' %}
         {% else %}
-            <p>No news items to show right now.</p>
+            <p>No news items.</p>
         {% endfor %}
     {% endif %}
 {% endblock %}

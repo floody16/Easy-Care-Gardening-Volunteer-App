@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% include 'job/new.html' %}
+    {% include 'job/form.html' %}
     {% if not editing %}
-        <h2 class="mb-3">Upcoming Jobs ({{ upcoming_jobs|length }})</h2>
-        {% for job in upcoming_jobs %}
+        <h2 class="mb-3">Current Jobs ({{ current_jobs|length }})</h2>
+        {% for job in current_jobs %}
             {% include 'job/list.html' %}
         {% else %}
-            <p>No upcoming jobs to show right now.</p>
+            <p>No current jobs.</p>
         {% endfor %}
         <h2 class="mt-5 mb-3">Past Jobs ({{ past_jobs|length }})</h2>
         {% for job in past_jobs %}
@@ -15,7 +15,7 @@
                 {% include 'job/list.html' %}
             {% endwith %}
         {% else %}
-            <p>No past jobs to show right now.</p>
+            <p>No past jobs.</p>
         {% endfor %}
     {% endif %}
 {% endblock %}

@@ -35,8 +35,8 @@ class TimePreference(Enum):
 
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class User(UserMixin, db.Model):
@@ -80,7 +80,7 @@ class NewsItem(db.Model):
 
 
 class NewsItemAcknowledgement(db.Model):
-    __tablename__ = 'news_item_acknowledgement'
+    __tablename__ = 'acknowledgement'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -101,7 +101,7 @@ class Job(db.Model):
     notes = db.Column(db.String(1024))
     cancelled = db.Column(db.Boolean, default=0)
     created_at = db.Column(db.DateTime, default=db.func.now())
-    updated_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     author = db.relationship('User', backref='job')
     opt_ins = db.relationship('OptIn', backref='job', lazy='dynamic')

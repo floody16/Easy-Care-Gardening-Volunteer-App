@@ -7,7 +7,7 @@
         {% if job.notes %}
             <li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>
         {% endif %}
-        <li class="list-group-item">
+        <div class="list-group-item">
             {% with n_opt_ins = job.get_opt_ins(job.id)|length %}
                 {% if n_opt_ins > 0 %}
                     <a href="{{ url_for('job.opt_ins', job_id=job.id) }}" class="btn btn-primary">View {{ n_opt_ins }} opt-in(s)</a>
@@ -15,18 +15,19 @@
                     <button class="btn btn-secondary" disabled>No opt-ins</button>
                 {% endif %}
             {% endwith %}
+            {% with n_feedback = job.get_feedback(job.id)|length %}
+                {% if n_feedback > 0 %}
+                    <a href="{{ url_for('job.feedback', job_id=job.id) }}" class="btn btn-primary">View {{ n_feedback }} feedback</a>
+                {% else %}
+                    <button class="btn btn-secondary" disabled>No feedback</button>
+                {% endif %}
+            {% endwith %}
             {% if not past_job %}
-                <a href="{{ url_for('job.edit', job_id=job.id) }}" class="btn btn-warning">Edit</a>
-                <a href="{{ url_for('job.cancel', job_id=job.id) }}" class="btn btn-warning">{{ 'Un-c' if job.cancelled else 'C' }}ancel Job</a>
-            {% else %}
-                {% with n_feedback = job.get_feedback(job.id)|length %}
-                    {% if n_feedback > 0 %}
-                        <a href="{{ url_for('job.feedback', job_id=job.id) }}" class="btn btn-primary">View {{ n_feedback }} feedback</a>
-                    {% else %}
-                        <button class="btn btn-secondary" disabled>No feedback</button>
-                    {% endif %}
-                {% endwith %}
+                <div class="btn-group float-right" role="group">
+                    <a href="{{ url_for('job.edit', job_id=job.id) }}" class="btn btn-warning">Edit</a>
+                    <a href="{{ url_for('job.cancel', job_id=job.id) }}" class="btn btn-danger">{{ 'Un-c' if job.cancelled else 'C' }}ancel Job</a>
+                </div>
             {% endif %}
-        </li>
+        </div>
     </ul>
 </div>

@@ -8,8 +8,6 @@
         {% else %}
             <button class="btn btn-secondary" disabled>Acknowledged...</button>
         {% endif %}
-        <a href="{{ url_for('news.edit', news_item_id=news_item.id) }}" class="btn btn-warning">Edit</a>
-        <a href="{{ url_for('news.delete', news_item_id=news_item.id) }}" class="btn btn-danger">Delete</a>
         {% with n_cknowledgements = news_item.get_acknowledgements(news_item.id)|length %}
             <span class="text-muted ml-1">
                 {% if n_cknowledgements == 0 %}
@@ -19,5 +17,9 @@
                 {% endif %}
             </span>
         {% endwith %}
+        <div class="btn-group float-right" role="group">
+            <a href="{{ url_for('news.edit', news_item_id=news_item.id) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ url_for('news.delete', news_item_id=news_item.id) }}" class="btn btn-danger">Delete</a>
+        </div>
     </div>
 </div>
