@@ -1,7 +1,6 @@
 from app import db
 from app.forms import RegistrationForm, LoginForm
 from app.models import User, Invite
-from app.utils import day_pref_to_binary
 
 from flask import Blueprint, flash, redirect, url_for, render_template, abort
 from flask_login import login_user, current_user, logout_user

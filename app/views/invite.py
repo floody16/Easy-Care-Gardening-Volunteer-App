@@ -3,8 +3,8 @@ from app.forms import UserForm
 from app.models import User, Invite
 from app.utils import day_pref_to_binary, generate_invite_key
 
-from flask import Blueprint, flash, redirect, url_for, render_template
-import uuid
+from flask import Blueprint, flash, redirect, url_for, render_template, abort
+from flask_login import login_required
 
 invite = Blueprint('invite', __name__, url_prefix='/invite/', template_folder='templates')
 
@@ -32,7 +32,7 @@ def index():
         db.session.add(new_invite)
         db.session.commit()
 
-        flash('Invitation created. The user can register at: ' + address + key, 'success')
+        flash('Invitation created. The user can register at: ' + address + '/register/' + key, 'success')
         return redirect(url_for('invite.index'))
 
     data = {
@@ -42,3 +42,20 @@ def index():
     }
 
     return render_template('user/invite.html', **data)
+
+
+@invite.route('/<int:invite_id>/reissue/', methods=['GET', 'POST'])
+@login_required
+def reissue(invite_id):
+    this_invite = Invite.query.filter_by(id=invite_id).scalar()
+
+    if not this_invite:
+        abort(404)
+
+    new_key = generate_invite_key()
+    this_invite.key = new_key
+
+    db.session.commit()
+
+    flash('Invite key reissued. The user must now register at: ' + address + '/register/' + new_key, 'success')
+    return redirect(url_for('manage.index'))

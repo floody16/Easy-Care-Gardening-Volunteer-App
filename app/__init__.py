@@ -15,7 +15,7 @@ login.login_view = 'user.login'
 login.login_message = 'Please log in first.'
 login.login_message_category = 'danger'
 
-address = app.config['ADDRESS'] + '/register/'
+address = app.config['ADDRESS']
 
 from app import models
 from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty, day_prefs_pretty
