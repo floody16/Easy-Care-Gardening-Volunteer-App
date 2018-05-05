@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
     <div class="card mb-5 bg-light">
@@ -41,7 +41,8 @@
             <div class="card-body">
                 <h3>{{ feedback.job.address }} on {{ timestamp_pretty(feedback.job.date, show_time=False) }}</h3>
                 <p><i>Left on {{ timestamp_pretty(feedback.created_at) }}</i></p>
-                <p>{{ feedback.body }}</p>
+                <hr>
+                <span>{{ feedback.body }}</span>
             </div>
         </div>
     {% else %}

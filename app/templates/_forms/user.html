@@ -1,0 +1,81 @@
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group row">
+        {{ form.email.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.email(class_='form-control') }}
+            {% for error in form.email.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.full_name.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.full_name(class_='form-control') }}
+            {% for error in form.full_name.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.user_type.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.user_type(class_='form-control') }}
+            {% for error in form.user_type.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.join_date.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.join_date(class_='form-control') }}
+            {% for error in form.join_date.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.next_police_check.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.next_police_check(class_='form-control') }}
+            {% for error in form.next_police_check.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.time_pref.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            {{ form.time_pref(class_='form-control') }}
+            {% for error in form.time_pref.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form.day_prefs.label(class_='col-sm-2 col-form-label') }}
+        <div class="col-sm-10">
+            <ul class="list-group">
+                {% for day in form.day_prefs %}
+                    <li class="list-group-item">
+                        <div class="form-check">
+                            {{ day(class_='form-check-input') }}
+                            {{ day.label(class_='form-check-label ml-1') }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% for error in form.day_prefs.errors %}
+                <p class="text-danger">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% if editing %}
+        {{ form.submit(class_='btn btn-primary float-right', value='Save Changes') }}
+        <a href="{{ url_for('manage.index') }}" class="btn btn-warning">Discard Changes</a>
+    {% else %}
+        {{ form.submit(class_='btn btn-primary float-right') }}
+    {% endif %}
+</form>

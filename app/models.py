@@ -21,6 +21,25 @@ class UserType(Enum):
         }.get(self.value)
 
 
+class DayPreference(Enum):
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
+    SATURDAY = 5
+
+    def __str__(self):
+        return {
+            0: 'Monday',
+            1: 'Tuesday',
+            2: 'Wednesday',
+            3: 'Thursday',
+            4: 'Friday',
+            5: 'Saturday'
+        }.get(self.value)
+
+
 class TimePreference(Enum):
     HALF_DAY_MORNING = 'AM'
     HALF_DAY_AFTERNOON = 'PM'
@@ -142,3 +161,14 @@ class Feedback(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     author = db.relationship('User', backref='feedback')
+
+
+class Invite(db.Model):
+    __tablename__ = 'invite'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), unique=True)
+    key = db.Column(db.String(8), unique=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
+
+    user = db.relationship('User', backref='invite')

@@ -1,0 +1,13 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <div class="card mb-5 bg-light">
+        <div class="card-header">
+            <h2 class="mb-3">Invite User</h2>
+            <h5>Ultimately generates an invite link that the user can use to set their password and register.</h5>
+        </div>
+        <div class="card-body">
+            {% include '_forms/user.html' %}
+        </div>
+    </div>
+{% endblock %}

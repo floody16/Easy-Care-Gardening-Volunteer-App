@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
-    {% include 'job/form.html' %}
+    {% include '_forms/job.html' %}
     {% if not editing %}
         <h2 class="mb-3">Current Jobs ({{ current_jobs|length }})</h2>
         {% for job in current_jobs %}
-            {% include 'job/list.html' %}
+            {% include 'job/_list.html' %}
         {% else %}
             <p>No current jobs.</p>
         {% endfor %}
         <h2 class="mt-5 mb-3">Past Jobs ({{ past_jobs|length }})</h2>
         {% for job in past_jobs %}
             {% with past_job = True %}
-                {% include 'job/list.html' %}
+                {% include 'job/_list.html' %}
             {% endwith %}
         {% else %}
             <p>No past jobs.</p>

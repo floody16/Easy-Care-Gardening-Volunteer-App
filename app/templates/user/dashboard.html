@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
     <div class="row mb-4">
@@ -59,7 +59,7 @@
         <div class="col-sm-4">
             <div class="card bg-light">
                 <div class="card-body">
-                    <a href="{{ url_for('user.logout') }}"><h3 class="card-title">Log out</h3></a>
+                    <a href="{{ url_for('auth.logout') }}"><h3 class="card-title">Log out</h3></a>
                     <p class="card-text">Keep your account safe by logging out when finished.</p>
                 </div>
             </div>

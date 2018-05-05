@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
     <h2 class="mb-3">Log in</h2>
     <div class="card mb-5 bg-light">
         <div class="card-body">
-            <form action="{{ url_for('user.login') }}" method="post">
+            <form action="{{ url_for('auth.login') }}" method="post">
                 {{ form.hidden_tag() }}
                 <div class="form-group row">
                     {{ form.email.label(class_='col-sm-2 col-form-label') }}
@@ -28,6 +28,6 @@
             </form>
         </div>
     </div>
-    <h2><a href="{{ url_for('user.register') }}">Register</a></h2>
+    <h2>Register</h2>
     <p>Accounts are granted upon request. To request an account, contact the administrator.</p>
 {% endblock %}

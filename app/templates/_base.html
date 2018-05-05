@@ -11,7 +11,7 @@
 <body>
 <div class="container mb-5">
     <div class="bg-light">
-        <a href="{{ url_for('user.dashboard') if current_user.is_authenticated else url_for('user.login') }}">
+        <a href="{{ url_for('user.dashboard') if current_user.is_authenticated else url_for('auth.login') }}">
             <img src="{{ url_for('static', filename='logo.jpg') }}" class="img-fluid mx-auto d-block" alt="Easy Care Gardening Logo">
         </a>
         <h5 class="text-center mb-0 p-2"><strong>App Prototype</strong></h5>
@@ -31,9 +31,9 @@
                 <a class="dropdown-item" href="{{ url_for('news.index') }}">Manage News</a>
                 <a class="dropdown-item" href="{{ url_for('job.index') }}">Manage Jobs</a>
                 <a class="dropdown-item" href="#">Edit Job Sheet Template</a>
-                <a class="dropdown-item" href="{{ url_for('user.manage') }}">Manage Users</a>
+                <a class="dropdown-item" href="{{ url_for('manage.index') }}">Manage Users</a>
             </div>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('user.logout') }}">Logout</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
         </ul>
     {% endif %}
     <h1 class="mt-5 mb-5 text-center"><strong>{{ title if title or 'ECGV' }}</strong></h1>

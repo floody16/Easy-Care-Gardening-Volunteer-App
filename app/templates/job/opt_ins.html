@@ -1,8 +1,10 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
-    <h2 class="mb-3">Opt-ins ({{ opt_ins|length }})
-        <a href="{{ url_for('job.index') }}" class="btn btn-primary btn-lg">Back to Jobs</a></h2>
+    <h2 class="mb-3">
+        <a href="{{ url_for('job.index') }}" class="btn btn-primary btn-lg mr-1"">◄ Back to Jobs</a>
+        Opt-ins ({{ opt_ins|length }})
+    </h2>
     {% for opt_in in opt_ins %}
         <div class="card mb-3">
             <div class="card-body">

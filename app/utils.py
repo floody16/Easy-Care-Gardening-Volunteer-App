@@ -1,4 +1,6 @@
-from app.models import UserType, TimePreference, Job
+from app.models import UserType, TimePreference, DayPreference, Job
+
+import uuid
 
 
 def get_suitable_jobs(jobs, time_prefs, day_prefs):
@@ -44,12 +46,11 @@ def day_prefs_pretty(day_prefs):
     if not day_prefs or day_prefs == '000000':
         return ''
 
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     pretty = []
 
     for i in range(0, 6):
         if day_prefs[i] == '1':
-            pretty.append(days[i])
+            pretty.append(str(DayPreference(i)))
 
     return pretty
 
@@ -71,3 +72,7 @@ def past_jobs_pretty():
                                                 job.time)))
 
     return past_jobs
+
+
+def generate_invite_key():
+    return str(uuid.uuid4())[:8]

@@ -1,65 +1,17 @@
 from app import db
-from app.forms import RegistrationForm, LoginForm, ChangePasswordForm, FindUserForm, FeedbackForm
+from app.forms import ChangePasswordForm, FeedbackForm, UserForm
 from app.models import User, Job, Feedback
-from app.utils import day_pref_to_binary, get_suitable_jobs
+from app.utils import get_suitable_jobs
 
-from flask import Blueprint, flash, redirect, url_for, render_template
-from flask_login import login_user, current_user, logout_user, login_required
+from flask import Blueprint, flash, redirect, url_for, render_template, abort
+from flask_login import current_user, login_required
 import datetime
 
-user = Blueprint('user', __name__, url_prefix='/user/', template_folder='templates')
+user = Blueprint('user', __name__, template_folder='templates')
 
 
-@user.route('/register/', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        flash('You are already logged in.', 'info')
-        return redirect(url_for('user.dashboard'))
-
-    registration_form = RegistrationForm()
-
-    if registration_form.validate_on_submit():
-        new_user = User(email=registration_form.email.data,
-                        full_name=registration_form.full_name.data,
-                        user_type=registration_form.user_type.data,
-                        join_date=registration_form.join_date.data,
-                        next_police_check=registration_form.next_police_check.data,
-                        time_pref=registration_form.time_pref.data,
-                        day_pref=day_pref_to_binary(registration_form.day_prefs.data))
-        new_user.set_password(registration_form.password.data)
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        login_user(new_user)
-        flash('Registration successful.', 'success')
-        return redirect(url_for('user.dashboard'))
-
-    return render_template('user/register.html', title='Register', form=registration_form)
-
-
-@user.route('/login/', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        flash('You are already logged in.', 'info')
-        return redirect(url_for('user.dashboard'))
-
-    login_form = LoginForm()
-
-    if login_form.validate_on_submit():
-        this_user = User.query.filter_by(email=login_form.email.data).scalar()
-
-        if this_user is None or not this_user.check_password(login_form.password.data):
-            flash('Invalid credentials.', 'danger')
-            return redirect(url_for('user.login'))
-
-        login_user(this_user)
-        flash('Login successful.', 'success')
-        return redirect(url_for('user.dashboard'))
-
-    return render_template('user/login.html', title='Log in', form=login_form)
-
-
+@user.route('/')
+@user.route('/index/')
 @user.route('/dashboard/')
 @login_required
 def dashboard():
@@ -72,13 +24,13 @@ def profile():
     change_password_form = ChangePasswordForm()
 
     if change_password_form.validate_on_submit():
-        user = User.query.filter_by(id=current_user.id).scalar()
+        this_user = User.query.filter_by(id=current_user.id).scalar()
 
-        if not user.check_password(change_password_form.old_password.data):
+        if not this_user.check_password(change_password_form.old_password.data):
             flash('Old password is incorrect.', 'danger')
             return redirect(url_for('user.profile'))
 
-        user.set_password(change_password_form.new_password.data)
+        this_user.set_password(change_password_form.new_password.data)
         db.session.commit()
 
         flash('Password changed.', 'success')
@@ -126,20 +78,27 @@ def feedback():
     return render_template('user/feedback.html', **data)
 
 
-@user.route('/')
-def manage():
-    find_user_form = FindUserForm()
+@user.route('/user/<int:user_id>/edit/', methods=['GET', 'POST'])
+@login_required
+def edit(user_id):
+    this_user = User.query.filter_by(id=user_id).scalar()
+
+    if not this_user:
+        abort(404)
+
+    user_form = UserForm(obj=this_user)
+
+    if user_form.validate_on_submit():
+        user_form.populate_obj(this_user)
+        db.session.commit()
+
+        flash('User edited.', 'success')
+        return redirect(url_for('manage.index'))
 
     data = {
-        'title': 'Manage Users',
-        'form': find_user_form
+        'editing': True,
+        'title': 'Edit User',
+        'form': user_form
     }
 
-    return render_template('user/manage.html', **data)
-
-
-@user.route('/user/logout/')
-def logout():
-    logout_user()
-    flash('Log out successful.', 'info')
-    return redirect(url_for('user.login'))
+    return render_template('user/edit.html', **data)

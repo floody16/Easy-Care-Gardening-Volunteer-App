@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
     <div class="card mb-5">
@@ -12,13 +12,17 @@
             {% endif %}
         </ul>
     </div>
-    <h2 class="mb-3">All Feedback ({{ all_feedback|length }}) <a href="{{ url_for('job.index') }}" class="btn btn-primary btn-lg">Back to Jobs</a></h2>
+    <h2 class="mb-3">
+        <a href="{{ url_for('job.index') }}" class="btn btn-primary btn-lg">◄ Back to Jobs</a>
+        Feedback ({{ all_feedback|length }})
+    </h2>
     {% for feedback in all_feedback %}
         <div class="card mb-3">
             <div class="card-body">
-                <h3>{{ feedback.job.address }} on {{ timestamp_pretty(feedback.job.date, show_time=False) }}</h3>
-                <p><i>Left on {{ timestamp_pretty(feedback.created_at) }} by {{ feedback.author.full_name }}</i></p>
-                <p>{{ feedback.body }}</p>
+                <h3>{{ feedback.author.full_name }}</h3>
+                <p><i>Posted on {{ timestamp_pretty(feedback.created_at) }}</i></p>
+                <hr>
+                {{ feedback.body }}
             </div>
         </div>
     {% else %}

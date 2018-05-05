@@ -2,7 +2,9 @@
     <div class="card-body">
         <h3>{{ news_item.title }}</h3>
         <p><i>Posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
+        <hr>
         <p>{{ news_item.body }}</p>
+        <hr>
         {% if not news_item.is_acknowledged(current_user.id) %}
             <a href="{{ url_for('news.acknowledge', news_item_id=news_item.id) }}" class="btn btn-primary">Acknowledge</a>
         {% else %}
