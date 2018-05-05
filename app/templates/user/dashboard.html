@@ -34,15 +34,15 @@
             <div class="card bg-light">
                 <div class="card-body">
                     <a href="{{ url_for('user.roster') }}"><h3 class="card-title">Roster</h3></a>
-                    <p class="card-text">View and opt-into gardening jobs available to you.</p>
+                    <p class="card-text">View (and optionally opt-into) gardening jobs available to you.</p>
                 </div>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="card bg-light">
                 <div class="card-body">
-                    <a href="{{ url_for('job.feedback') }}"><h3 class="card-title">Feedback</h3></a>
-                    <p class="card-text">View and manage feedback regarding past jobs.</p>
+                    <a href="{{ url_for('user.feedback') }}"><h3 class="card-title">Feedback</h3></a>
+                    <p class="card-text">View and submit feedback for past gardening jobs.</p>
                 </div>
             </div>
         </div>
@@ -50,20 +50,12 @@
             <div class="card bg-light">
                 <div class="card-body">
                     <a href="{{ url_for('news.index') }}"><h3 class="card-title">News</h3></a>
-                    <p class="card-text">View and manage updates by Easy Care Gardening coordinators.</p>
+                    <p class="card-text">View updates by Easy Care Gardening coordinators.</p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <a href="{{ url_for('job.index') }}"><h3 class="card-title">Manage Jobs</h3></a>
-                    <p class="card-text">View and manage the jobs a volunteer may opt-in to.</p>
-                </div>
-            </div>
-        </div>
         <div class="col-sm-4">
             <div class="card bg-light">
                 <div class="card-body">

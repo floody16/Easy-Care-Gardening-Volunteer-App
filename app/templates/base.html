@@ -21,14 +21,13 @@
             <li class="nav-item"><a class="nav-link" href="{{ url_for('user.dashboard') }}">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Profile</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('user.roster') }}">Roster</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('job.feedback') }}">Feedback</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('user.feedback') }}">Feedback</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('news.index') }}">News</a></li>
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 {{ user_type_pretty(current_user.user_type) }}
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Manage Job Sheets</a>
-                <a class="dropdown-item" href="{{ url_for('job.feedback') }}">View Feedback</a>
                 <a class="dropdown-item" href="{{ url_for('news.index') }}">Manage News</a>
                 <a class="dropdown-item" href="{{ url_for('job.index') }}">Manage Jobs</a>
                 <a class="dropdown-item" href="#">Edit Job Sheet Template</a>

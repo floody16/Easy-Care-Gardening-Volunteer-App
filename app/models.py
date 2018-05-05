@@ -70,7 +70,7 @@ class NewsItem(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     author = db.relationship('User', backref='news_item')
-    acknowledgements = db.relationship('NewsItemAcknowledgement', backref='news_item', lazy='dynamic')
+    acknowledgements = db.relationship('NewsItemAcknowledgement', backref='news_item', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def get_acknowledgements(self, news_item_id):
         return self.acknowledgements.filter_by(news_item_id=news_item_id).order_by(NewsItemAcknowledgement.created_at).all()
@@ -105,6 +105,7 @@ class Job(db.Model):
 
     author = db.relationship('User', backref='job')
     opt_ins = db.relationship('OptIn', backref='job', lazy='dynamic')
+    feedback = db.relationship('Feedback', backref='job', lazy='dynamic')
 
     @staticmethod
     def get_past_jobs():
@@ -115,6 +116,9 @@ class Job(db.Model):
 
     def opted_into(self, user_id):
         return self.opt_ins.filter_by(user_id=user_id).order_by(OptIn.created_at).count() > 0
+
+    def get_feedback(self, job_id):
+        return self.feedback.filter_by(job_id=job_id).order_by(Feedback.created_at).all()
 
 
 class OptIn(db.Model):
@@ -138,4 +142,3 @@ class Feedback(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow())
 
     author = db.relationship('User', backref='feedback')
-    job = db.relationship('Job', backref='feedback')

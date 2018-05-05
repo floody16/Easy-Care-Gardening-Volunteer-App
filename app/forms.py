@@ -36,29 +36,29 @@ class LoginForm(FlaskForm):
 
 
 class NewsForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    body = TextAreaField('Body', validators=[DataRequired()])
+    title = StringField('Title*', validators=[DataRequired()])
+    body = TextAreaField('Body*', validators=[DataRequired()])
     submit = SubmitField('Post')
 
 
 class JobForm(FlaskForm):
-    address = StringField('Address', validators=[DataRequired()])
-    date = DateField('Date', validators=[DataRequired()])
-    time = SelectField('Time', choices=times[:-1], validators=[DataRequired()])
+    address = StringField('Address*', validators=[DataRequired()])
+    date = DateField('Date*', validators=[DataRequired()])
+    time = SelectField('Time*', choices=times[:-1], validators=[DataRequired()])
     notes = TextAreaField('Notes')
     submit = SubmitField('New Job')
 
 
 class ChangePasswordForm(FlaskForm):
-    old_password = PasswordField('Old Password', validators=[DataRequired()])
-    new_password = PasswordField('New Password', validators=[DataRequired()])
-    new_password_again = PasswordField('Repeat', validators=[DataRequired(), EqualTo('new_password', message='Passwords must match.')])
+    old_password = PasswordField('Old Password*', validators=[DataRequired()])
+    new_password = PasswordField('New Password*', validators=[DataRequired()])
+    new_password_again = PasswordField('Repeat*', validators=[DataRequired(), EqualTo('new_password', message='Passwords must match.')])
     submit = SubmitField('Change Password')
 
 
 class FeedbackForm(FlaskForm):
-    job = SelectField('Past Job', validators=[DataRequired()])
-    body = TextAreaField('Feedback', validators=[DataRequired()])
+    job = SelectField('Past Job*', validators=[DataRequired()])
+    body = TextAreaField('Feedback*', validators=[DataRequired()])
     submit = SubmitField('Submit Feedback')
 
     def __init__(self, *args, **kwargs):
@@ -67,5 +67,5 @@ class FeedbackForm(FlaskForm):
 
 
 class FindUserForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email*', validators=[DataRequired(), Email()])
     submit = SubmitField('Find')

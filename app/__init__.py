@@ -17,11 +17,10 @@ login.login_message_category = 'danger'
 
 from app import models
 from app.utils import user_type_pretty, time_pref_pretty, timestamp_pretty, day_prefs_pretty
-from app.views import job, news, opt_in, user
+from app.views import job, news, user
 
 app.register_blueprint(job.job)
 app.register_blueprint(news.news)
-app.register_blueprint(opt_in.opt_in)
 app.register_blueprint(user.user)
 
 app.jinja_env.globals.update(user_type_pretty=user_type_pretty,

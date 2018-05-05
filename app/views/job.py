@@ -1,6 +1,6 @@
 from app import db
-from app.forms import JobForm, FeedbackForm
-from app.models import Job, Feedback
+from app.forms import JobForm
+from app.models import Job, OptIn
 
 from flask import Blueprint, flash, redirect, url_for, render_template
 from flask_login import current_user, login_required
@@ -35,12 +35,17 @@ def index():
         flash('Job created successfully.', 'success')
         return redirect(url_for('job.index'))
 
-    all_jobs = Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all()
+    data = {
+        'title': 'Jobs',
+        'form': job_form,
+        'upcoming_jobs': Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all(),
+        'past_jobs': Job.query.filter(Job.date < datetime.date.today()).order_by(Job.date).all()
+    }
 
-    return render_template('job/index.html', title='Jobs', form=job_form, jobs=all_jobs)
+    return render_template('job/index.html', **data)
 
 
-@job.route('/cancel/<job_id>')
+@job.route('/<job_id>/cancel/')
 @login_required
 def cancel(job_id):
     this_job = Job.query.filter_by(id=job_id).scalar()
@@ -60,22 +65,58 @@ def cancel(job_id):
     return redirect(url_for('job.index'))
 
 
-@job.route('/feedback/', methods=['GET', 'POST'])
+@job.route('/<job_id>/feedback/')
 @login_required
-def feedback():
-    feedback_form = FeedbackForm()
+def feedback(job_id):
+    this_job = Job.query.filter_by(id=job_id).scalar()
 
-    if feedback_form.validate_on_submit():
-        new_feedback = Feedback(user_id=current_user.id,
-                                job_id=feedback_form.job.data,
-                                body=feedback_form.body.data)
+    if not this_job:
+        flash('No feedback for that address.', 'danger')
+        return redirect(url_for('job.index'))
 
-        db.session.add(new_feedback)
+    all_feedback = this_job.get_feedback(job_id)
+
+    return render_template('job/feedback.html', title='Feedback For Address', job=this_job, all_feedback=all_feedback)
+
+
+@job.route('/<job_id>/opt-in/')
+@login_required
+def opt_in(job_id):
+    this_job = Job.query.filter_by(id=job_id).scalar()
+
+    if not this_job:
+        flash('Cannot opt-into/opt-out of a non-existent job.', 'danger')
+        return redirect(url_for('user.roster'))
+
+    if this_job.cancelled:
+        flash('Cannot opt-into/opt-out of a cancelled job.', 'danger')
+        return redirect(url_for('user.roster'))
+
+    this_opt_in = OptIn.query.filter_by(job_id=job_id, user_id=current_user.id).scalar()
+
+    if this_opt_in:
+        db.session.delete(this_opt_in)
         db.session.commit()
 
-        flash('Feedback submitted.', 'success')
-        return redirect(url_for('job.feedback'))
+        flash('Opted-out.', 'success')
+        return redirect(url_for('user.roster'))
 
-    all_feedback = Feedback.query.all()
+    new_opt_in = OptIn(job_id=job_id, user_id=current_user.id)
 
-    return render_template('job/feedback.html', title='Feedback', form=feedback_form, all_feedback=all_feedback)
+    db.session.add(new_opt_in)
+    db.session.commit()
+
+    flash('Opted-in.', 'success')
+    return redirect(url_for('user.roster'))
+
+
+@job.route('/<job_id>/opt-ins/')
+@login_required
+def opt_ins(job_id):
+    if not Job.query.filter_by(id=job_id).scalar():
+        flash('Job does not exist.', 'danger')
+        return redirect(url_for('job.index'))
+
+    all_opt_ins = OptIn.query.filter_by(job_id=job_id).all()
+
+    return render_template('job/opt_ins.html', title='Job #' + job_id + ' Opt-ins', opt_ins=all_opt_ins)
