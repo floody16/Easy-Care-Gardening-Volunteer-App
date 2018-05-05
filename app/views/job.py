@@ -2,7 +2,7 @@ from app import db
 from app.forms import JobForm
 from app.models import Job, OptIn
 
-from flask import Blueprint, flash, redirect, url_for, render_template
+from flask import Blueprint, flash, redirect, url_for, render_template, abort
 from flask_login import current_user, login_required
 import datetime
 
@@ -36,10 +36,37 @@ def index():
         return redirect(url_for('job.index'))
 
     data = {
+        'editing': False,
         'title': 'Jobs',
         'form': job_form,
         'upcoming_jobs': Job.query.filter(Job.date >= datetime.date.today()).order_by(Job.date).all(),
         'past_jobs': Job.query.filter(Job.date < datetime.date.today()).order_by(Job.date).all()
+    }
+
+    return render_template('job/index.html', **data)
+
+
+@job.route('/<job_id>/edit/', methods=['GET', 'POST'])
+@login_required
+def edit(job_id):
+    this_job = Job.query.filter_by(id=job_id).scalar()
+
+    if not this_job:
+        abort(404)
+
+    job_form = JobForm(obj=this_job)
+
+    if job_form.validate_on_submit():
+        job_form.populate_obj(this_job)
+        db.session.commit()
+
+        flash('Job edited.', 'success')
+        return redirect(url_for('job.index'))
+
+    data = {
+        'editing': True,
+        'title': 'Edit Job',
+        'form': job_form,
     }
 
     return render_template('job/index.html', **data)
@@ -51,8 +78,7 @@ def cancel(job_id):
     this_job = Job.query.filter_by(id=job_id).scalar()
 
     if not this_job:
-        flash('Job does not exist.', 'danger')
-        return redirect(url_for('job.index'))
+        abort(404)
 
     this_job.cancelled = not this_job.cancelled
     db.session.commit()
@@ -71,8 +97,7 @@ def feedback(job_id):
     this_job = Job.query.filter_by(id=job_id).scalar()
 
     if not this_job:
-        flash('No feedback for that address.', 'danger')
-        return redirect(url_for('job.index'))
+        abort(404)
 
     all_feedback = this_job.get_feedback(job_id)
 
@@ -85,8 +110,7 @@ def opt_in(job_id):
     this_job = Job.query.filter_by(id=job_id).scalar()
 
     if not this_job:
-        flash('Cannot opt-into/opt-out of a non-existent job.', 'danger')
-        return redirect(url_for('user.roster'))
+        abort(404)
 
     if this_job.cancelled:
         flash('Cannot opt-into/opt-out of a cancelled job.', 'danger')
@@ -113,10 +137,11 @@ def opt_in(job_id):
 @job.route('/<job_id>/opt-ins/')
 @login_required
 def opt_ins(job_id):
-    if not Job.query.filter_by(id=job_id).scalar():
-        flash('Job does not exist.', 'danger')
-        return redirect(url_for('job.index'))
+    this_job = Job.query.filter_by(id=job_id).scalar()
 
-    all_opt_ins = OptIn.query.filter_by(job_id=job_id).all()
+    if not this_job:
+        abort(404)
+
+    all_opt_ins = this_job.get_opt_ins(job_id)
 
     return render_template('job/opt_ins.html', title='Job #' + job_id + ' Opt-ins', opt_ins=all_opt_ins)

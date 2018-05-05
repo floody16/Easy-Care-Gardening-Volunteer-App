@@ -2,7 +2,7 @@ from app import db
 from app.forms import NewsForm
 from app.models import NewsItem, NewsItemAcknowledgement
 
-from flask import Blueprint, flash, redirect, url_for, render_template, request, abort
+from flask import Blueprint, flash, redirect, url_for, render_template, abort
 from flask_login import current_user, login_required
 
 news = Blueprint('news', __name__, url_prefix='/news/', template_folder='templates')
@@ -40,8 +40,7 @@ def edit(news_item_id):
     news_item = NewsItem.query.filter_by(id=news_item_id).scalar()
 
     if not news_item:
-        flash('News item doesn\'t exist.', 'danger')
-        return redirect(url_for('news.index'))
+        abort(404)
 
     news_form = NewsForm(obj=news_item)
 

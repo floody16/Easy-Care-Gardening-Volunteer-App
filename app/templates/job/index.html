@@ -1,110 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="card mb-5 bg-light">
-        <div class="card-header">
-            <h2 class="mb-3">New Job</h2>
-        </div>
-        <div class="card-body">
-            <form action="{{ url_for('job.index') }}" method="post">
-                {{ form.hidden_tag() }}
-                <div class="form-group row">
-                    {{ form.address.label(class_='col-sm-2 col-form-label') }}
-                    <div class="col-sm-10">
-                        {{ form.address(class_='form-control') }}
-                        {% for error in form.address.errors %}
-                            <p class="text-danger">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    {{ form.date.label(class_='col-sm-2 col-form-label') }}
-                    <div class="col-sm-10">
-                        {{ form.date(class_='form-control') }}
-                        {% for error in form.date.errors %}
-                            <p class="text-danger">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    {{ form.time.label(class_='col-sm-2 col-form-label') }}
-                    <div class="col-sm-10">
-                        {{ form.time(class_='form-control') }}
-                        {% for error in form.time.errors %}
-                            <p class="text-danger">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    {{ form.notes.label(class_='col-sm-2 col-form-label') }}
-                    <div class="col-sm-10">
-                        {{ form.notes(class_='form-control') }}
-                        {% for error in form.notes.errors %}
-                            <p class="text-danger">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                </div>
-                {{ form.submit(class_='btn btn-primary float-right') }}
-            </form>
-        </div>
-    </div>
-    <h2 class="mb-3">Upcoming Jobs ({{ upcoming_jobs|length }})</h2>
-    {% for job in upcoming_jobs %}
-        <div class="card mb-3">
-            <div class="card-header"><strong>Created by:</strong> {{ job.author.full_name }} on {{ timestamp_pretty(job.created_at) }}</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
-                <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
-                <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
-                {% if job.notes %}
-                    <li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>
-                {% endif %}
-                <li class="list-group-item">
-                    {% with n_opt_ins = job.get_opt_ins(job.id)|length %}
-                        {% if n_opt_ins > 0 %}
-                            <a href="{{ url_for('job.opt_ins', job_id=job.id) }}" class="btn btn-primary">View {{ n_opt_ins }} opt-in(s)</a>
-                        {% else %}
-                            <button class="btn btn-secondary" disabled>No opt-ins</button>
-                        {% endif %}
-                    {% endwith %}
-                    <a href="#" class="btn btn-warning">Edit</a>
-                    <a href="{{ url_for('job.cancel', job_id=job.id) }}" class="btn btn-warning">{{ 'Un-c' if job.cancelled else 'C' }}ancel Job</a>
-                </li>
-            </ul>
-        </div>
-    {% else %}
-        <p>No upcoming jobs to show right now.</p>
-    {% endfor %}
-    <h2 class="mt-5 mb-3">Past Jobs ({{ past_jobs|length }})</h2>
-    {% for job in past_jobs %}
-        <div class="card mb-3">
-            <div class="card-header"><strong>Created by:</strong> {{ job.author.full_name }} on {{ timestamp_pretty(job.created_at) }}</div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong class="text-dark">Address:</strong> {{ job.address }}</li>
-                <li class="list-group-item"><strong class="text-dark">Date:</strong> {{ timestamp_pretty(job.date, show_time=False) }}</li>
-                <li class="list-group-item"><strong class="text-dark">Time:</strong> {{ job.time }}</li>
-                {% if job.notes %}
-                    <li class="list-group-item"><strong class="text-dark">Notes:</strong> {{ job.notes }}</li>
-                {% endif %}
-                <li class="list-group-item">
-                    {% with n_opt_ins = job.get_opt_ins(job.id)|length %}
-                        {% if n_opt_ins > 0 %}
-                            <a href="{{ url_for('job.opt_ins', job_id=job.id) }}" class="btn btn-primary">View {{ n_opt_ins }} opt-in(s)</a>
-                        {% else %}
-                            <button class="btn btn-secondary" disabled>No opt-ins</button>
-                        {% endif %}
-                    {% endwith %}
-                    {% with n_feedback = job.get_feedback(job.id)|length %}
-                        {% if n_feedback > 0 %}
-                            <a href="{{ url_for('job.feedback', job_id=job.id) }}" class="btn btn-primary">View {{ n_feedback }} feedback</a>
-                        {% else %}
-                            <button class="btn btn-secondary" disabled>No feedback</button>
-                        {% endif %}
-                    {% endwith %}
-                </li>
-            </ul>
-        </div>
-    {% else %}
-        <p>No past jobs to show right now.</p>
-    {% endfor %}
+    {% include 'job/new.html' %}
+    {% if not editing %}
+        <h2 class="mb-3">Upcoming Jobs ({{ upcoming_jobs|length }})</h2>
+        {% for job in upcoming_jobs %}
+            {% include 'job/list.html' %}
+        {% else %}
+            <p>No upcoming jobs to show right now.</p>
+        {% endfor %}
+        <h2 class="mt-5 mb-3">Past Jobs ({{ past_jobs|length }})</h2>
+        {% for job in past_jobs %}
+            {% with past_job = True %}
+                {% include 'job/list.html' %}
+            {% endwith %}
+        {% else %}
+            <p>No past jobs to show right now.</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

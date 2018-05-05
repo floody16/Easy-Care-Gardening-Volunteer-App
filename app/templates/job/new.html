@@ -1,0 +1,52 @@
+<div class="card mb-5 bg-light">
+    <div class="card-header">
+        <h2 class="mb-3">{{ 'Edit' if editing else 'New' }} Job</h2>
+    </div>
+    <div class="card-body">
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group row">
+                {{ form.address.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.address(class_='form-control') }}
+                    {% for error in form.address.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.date.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.date(class_='form-control') }}
+                    {% for error in form.date.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.time.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.time(class_='form-control') }}
+                    {% for error in form.time.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form.notes.label(class_='col-sm-2 col-form-label') }}
+                <div class="col-sm-10">
+                    {{ form.notes(class_='form-control') }}
+                    {% for error in form.notes.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if editing %}
+                {{ form.submit(class_='btn btn-primary float-right', value='Save Changes') }}
+                <a href="{{ url_for('job.index') }}" class="btn btn-warning">Discard Changes</a>
+            {% else %}
+                {{ form.submit(class_='btn btn-primary float-right') }}
+            {% endif %}
+        </form>
+    </div>
+</div>

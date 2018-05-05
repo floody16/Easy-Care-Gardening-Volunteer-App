@@ -1,0 +1,23 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h3>{{ news_item.title }}</h3>
+        <p><i>Posted on {{ timestamp_pretty(news_item.created_at) }} by {{ news_item.author.full_name }}</i></p>
+        <p>{{ news_item.body }}</p>
+        {% if not news_item.is_acknowledged(current_user.id) %}
+            <a href="{{ url_for('news.acknowledge', news_item_id=news_item.id) }}" class="btn btn-primary">Acknowledge</a>
+        {% else %}
+            <button class="btn btn-secondary" disabled>Acknowledged...</button>
+        {% endif %}
+        <a href="{{ url_for('news.edit', news_item_id=news_item.id) }}" class="btn btn-warning">Edit</a>
+        <a href="{{ url_for('news.delete', news_item_id=news_item.id) }}" class="btn btn-danger">Delete</a>
+        {% with n_cknowledgements = news_item.get_acknowledgements(news_item.id)|length %}
+            <span class="text-muted ml-1">
+                {% if n_cknowledgements == 0 %}
+                    No acknowledgements
+                {% else %}
+                    <a href="{{ url_for('news.acknowledgements', news_item_id=news_item.id) }}">{{ n_cknowledgements }} acknowledgement(s)</a>
+                {% endif %}
+            </span>
+        {% endwith %}
+    </div>
+</div>
